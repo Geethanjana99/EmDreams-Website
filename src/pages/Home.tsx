@@ -278,7 +278,8 @@ export function Home({ onNavigate }: HomeProps) {
             Talented professionals dedicated to your success
           </p>
         </div>
-        <div className="relative flex justify-center items-center gap-4 mb-16 overflow-hidden px-4">
+        {/* Desktop View - All members visible */}
+        <div className="hidden md:flex relative justify-center items-center gap-4 mb-16 overflow-hidden px-4">
           {featuredTeam.map((member, index) => {
             const middleIndex = 2; // CEO in the middle of 5 members
             const isCEO = index === middleIndex;
@@ -288,7 +289,6 @@ export function Home({ onNavigate }: HomeProps) {
             
             // Scale reduces by 10% for each step away from center
             const scaleValue = 100 - (distance * 10);
-            const scaleClass = `scale-[${scaleValue / 100}]`;
             
             // Inline style for dynamic scale
             const scale = scaleValue / 100;
@@ -308,6 +308,38 @@ export function Home({ onNavigate }: HomeProps) {
                   <TeamMemberCard member={member} />
                 </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* Mobile View - Horizontal Scroll */}
+        <div className="md:hidden mb-16 -mx-4 px-4">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4">
+            {featuredTeam.map((member, index) => {
+              const middleIndex = 2;
+              const isCEO = index === middleIndex;
+              
+              return (
+                <div
+                  key={member.name}
+                  className="flex-shrink-0 snap-center first:ml-4 last:mr-4"
+                >
+                  <div className="w-[280px]">
+                    <TeamMemberCard member={member} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex justify-center gap-2 mt-4">
+            {featuredTeam.map((_, index) => (
+              <div
+                key={index}
+                className="w-2 h-2 rounded-full bg-white/20"
+              />
+            ))}
+          </div>
+        </div>
             );
           })}
         </div>
