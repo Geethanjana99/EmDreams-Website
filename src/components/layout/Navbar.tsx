@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { Sun, Moon } from 'lucide-react';
+import logo from '../../assets/Emdreams Logo.png';
 type NavbarProps = {
   currentPage: string;
   onNavigate: (page: string) => void;
@@ -60,8 +61,8 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
             onClick={() => onNavigate('home')}
             className="text-2xl font-bold text-foreground tracking-tight hover:text-primary transition-colors flex items-center gap-2"
             aria-label="EmDreams home">
-
-            <span className="text-primary">Em</span>Dreams
+            <img src={logo} alt="EmDreams Logo" className="h-8 w-[2.375rem] object-contain" />
+            <span><span className="text-primary">Em</span>Dreams</span>
           </button>
 
           {/* Desktop Navigation */}

@@ -29,24 +29,25 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
   return (
     <>
       <Card
-        className="group cursor-pointer bg-white/5 border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-300"
+        className="group cursor-pointer bg-white/5 border-white/10 overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] transition-all duration-500"
         onClick={() => setOpen(true)}>
 
         <CardContent className="p-0">
           <div className="relative aspect-square overflow-hidden">
-            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay" />
             <img
               src={member.image}
               alt={member.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2" />
 
           </div>
-          <div className="p-6 relative">
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">
-              {member.name}
+          <div className="p-6 relative bg-gradient-to-b from-transparent to-white/5 group-hover:to-primary/5 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors duration-300 min-h-[3.5rem] flex items-center">
+              <span className="line-clamp-2 leading-tight">{member.name}</span>
             </h3>
-            <p className="text-sm text-muted-foreground">{member.role}</p>
+            <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">{member.role}</p>
           </div>
         </CardContent>
       </Card>

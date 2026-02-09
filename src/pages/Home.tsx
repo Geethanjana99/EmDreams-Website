@@ -30,8 +30,8 @@ export function Home({ onNavigate }: HomeProps) {
     icon: iconMap[service.title as keyof typeof iconMap],
   }));
   
-  // Get featured team members (first 3)
-  const featuredTeam = teamMembers.slice(0, 3);
+  // Get featured team members (5 with CEO in middle)
+  const featuredTeam = teamMembers.slice(0, 5);
   
   // Get featured projects (first 2)
   const featuredProjects = projects.slice(0, 2);
@@ -39,17 +39,17 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="w-full overflow-hidden">
       {/* MODERN CREATIVE HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden bg-background">
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-16 pb-8 overflow-hidden bg-background">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background z-10" />
         <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-600/10 rounded-full blur-[100px]" />
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Text Content */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-xs font-medium text-primary tracking-wider uppercase">
@@ -57,21 +57,21 @@ export function Home({ onNavigate }: HomeProps) {
                 </span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
                 <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[0]}.</span>
                 <span className="block text-gradient">{COMPANY_INFO.tagline.split('.')[1]}.</span>
                 <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[2]}.</span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
                 {COMPANY_INFO.description}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button
                   size="lg"
                   onClick={() => onNavigate('contact')}
-                  className="bg-primary hover:bg-primary/90 text-black font-bold text-lg px-8 h-14 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] transition-all duration-300">
+                  className="bg-primary hover:bg-primary/90 text-black font-bold text-base px-6 h-12 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] transition-all duration-300">
 
                   Start Your Project
                 </Button>
@@ -79,29 +79,29 @@ export function Home({ onNavigate }: HomeProps) {
                   size="lg"
                   variant="outline"
                   onClick={() => onNavigate('portfolio')}
-                  className="border-white/20 hover:border-primary hover:text-primary h-14 px-8 text-lg bg-transparent backdrop-blur-sm">
+                  className="border-white/20 hover:border-primary hover:text-primary h-12 px-6 text-base bg-transparent backdrop-blur-sm">
 
                   View Our Work
                 </Button>
               </div>
 
               {/* Stats Row */}
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
+              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
                 <div>
-                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.projectsCompleted}+</div>
-                  <div className="text-sm text-muted-foreground mt-1">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.projectsCompleted}+</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Projects
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.clientsServed}+</div>
-                  <div className="text-sm text-muted-foreground mt-1">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.clientsServed}+</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Clients
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.yearsOfExperience}+</div>
-                  <div className="text-sm text-muted-foreground mt-1">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.yearsOfExperience}+</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Years
                   </div>
                 </div>
@@ -110,21 +110,21 @@ export function Home({ onNavigate }: HomeProps) {
 
             {/* Creative Visual - Bento Grid Mockup */}
             <div className="relative hidden lg:block">
-              <div className="relative w-full aspect-square max-w-[600px] mx-auto perspective-1000">
+              <div className="relative w-full aspect-square max-w-[500px] mx-auto perspective-1000">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-3xl blur-2xl transform rotate-6" />
 
-                <div className="grid grid-cols-2 gap-4 h-full transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700 ease-out">
+                <div className="grid grid-cols-2 gap-3 h-full transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700 ease-out">
                   {/* Card 1: Code Editor */}
-                  <div className="col-span-2 bg-[#1e1e1e] rounded-2xl border border-white/10 p-4 shadow-2xl overflow-hidden">
-                    <div className="flex items-center gap-2 mb-4 border-b border-white/5 pb-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <div className="col-span-2 bg-[#1e1e1e] rounded-2xl border border-white/10 p-3 shadow-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
                       <div className="ml-auto text-xs text-white/30">
                         App.tsx
                       </div>
                     </div>
-                    <div className="space-y-2 font-mono text-xs">
+                    <div className="space-y-1.5 font-mono text-[10px]">
                       <div className="text-purple-400">
                         import <span className="text-white">React</span> from{' '}
                         <span className="text-green-400">'react'</span>
@@ -133,16 +133,16 @@ export function Home({ onNavigate }: HomeProps) {
                         function <span className="text-yellow-400">App</span>(){' '}
                         {'{'}
                       </div>
-                      <div className="pl-4 text-white">return (</div>
-                      <div className="pl-8 text-white">
+                      <div className="pl-3 text-white">return (</div>
+                      <div className="pl-6 text-white">
                         {'<'}div className=
                         <span className="text-green-400">"hero"</span>
                         {'>'}
                       </div>
-                      <div className="pl-12 text-white">
+                      <div className="pl-9 text-white">
                         {'<'}h1{'>'}Hello World{'<'}/h1{'>'}
                       </div>
-                      <div className="pl-8 text-white">
+                      <div className="pl-6 text-white">
                         {'<'}/div{'>'}
                       </div>
                       <div className="pl-4 text-white">)</div>
@@ -278,10 +278,38 @@ export function Home({ onNavigate }: HomeProps) {
             Talented professionals dedicated to your success
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredTeam.map((member) =>
-          <TeamMemberCard key={member.name} member={member} />
-          )}
+        <div className="relative flex justify-center items-center gap-4 mb-16 overflow-hidden px-4">
+          {featuredTeam.map((member, index) => {
+            const middleIndex = 2; // CEO in the middle of 5 members
+            const isCEO = index === middleIndex;
+            
+            // Calculate distance from center (0, 1, or 2)
+            const distance = Math.abs(index - middleIndex);
+            
+            // Scale reduces by 10% for each step away from center
+            const scaleValue = 100 - (distance * 10);
+            const scaleClass = `scale-[${scaleValue / 100}]`;
+            
+            // Inline style for dynamic scale
+            const scale = scaleValue / 100;
+            
+            return (
+              <div
+                key={member.name}
+                className={`transition-all duration-700 ease-out hover:scale-105 hover:z-30 ${
+                  isCEO ? 'z-20' : 'z-10'
+                }`}
+                style={{
+                  transform: `scale(${scale})`,
+                  opacity: isCEO ? 1 : 0.85 + (distance * -0.1),
+                }}
+              >
+                <div className="w-[240px]">
+                  <TeamMemberCard member={member} />
+                </div>
+              </div>
+            );
+          })}
         </div>
         <div className="text-center">
           <Button

@@ -1,6 +1,7 @@
 import React from 'react';
 import { GithubIcon, TwitterIcon, LinkedinIcon, MailIcon } from 'lucide-react';
 import { COMPANY_INFO } from '../../constants';
+import logo from '../../assets/Emdreams Logo.png';
 
 export function Footer() {
   const footerLinks = {
@@ -50,8 +51,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-[#c8c1c1]">
-              <span className="text-primary">Em</span>Dreams
+            <h3 className="text-2xl font-bold text-[#c8c1c1] flex items-center gap-2">
+              <img src={logo} alt="EmDreams Logo" className="h-8 w-[2.375rem] object-contain" />
+              <span><span className="text-primary">Em</span>Dreams</span>
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Building digital solutions that drive business growth through
