@@ -340,9 +340,7 @@ export function Home({ onNavigate }: HomeProps) {
             ))}
           </div>
         </div>
-            );
-          })}
-        </div>
+        
         <div className="text-center">
           <Button
             variant="outline"
