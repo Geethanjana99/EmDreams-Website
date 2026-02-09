@@ -242,15 +242,15 @@ export function Home({ onNavigate }: HomeProps) {
             {/* Connecting Line (Desktop) */}
             <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {workSteps.map((step, index) =>
-              <div key={step.number} className="relative group">
-                  <div className="w-24 h-24 mx-auto bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+              <div key={step.number} className="relative group flex flex-col items-center">
+                  <div className="w-24 h-24 bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 relative z-20 group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
                     <span className="text-3xl font-bold text-primary">
                       {step.number}
                     </span>
                   </div>
-                  <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-colors text-center h-full min-h-[200px]">
+                  <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-colors text-center h-full min-h-[200px] w-full">
                     <CardContent className="pt-8 pb-8 px-6">
                       <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                         {step.title}
