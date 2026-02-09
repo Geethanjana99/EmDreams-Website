@@ -225,7 +225,7 @@ export function Home({ onNavigate }: HomeProps) {
       </SectionContainer>
 
       {/* How We Work */}
-      <SectionContainer className="relative overflow-hidden bg-background min-h-[800px] pb-32">
+      <SectionContainer className="relative overflow-hidden bg-background min-h-[700px] pb-32">
         <div className="absolute top-1/2 left-0 w-full h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10 pointer-events-none" />
         <div className="relative z-10">
           <div className="text-center mb-16">
