@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
+import { Sun, Moon } from 'lucide-react';
 type NavbarProps = {
   currentPage: string;
   onNavigate: (page: string) => void;
 };
 export function Navbar({ currentPage, onNavigate }: NavbarProps) {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  useEffect(() => {
+    // Check localStorage or system preference on mount
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.remove('light');
+      }
+    }
+  }, []);
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    if (newTheme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  };
   const navLinks = [
   {
     name: 'Home',
@@ -28,7 +52,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
   }];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -54,8 +78,21 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
             )}
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button & Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="rounded-full text-muted-foreground hover:text-foreground hover:bg-white/5"
+              aria-label="Toggle theme">
+
+              {theme === 'dark' ?
+              <Sun className="h-5 w-5" /> :
+
+              <Moon className="h-5 w-5" />
+              }
+            </Button>
             <Button
               size="default"
               className="bg-primary hover:bg-primary/90 text-black font-semibold shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_25px_rgba(249,115,22,0.5)] transition-all duration-300">
@@ -94,10 +131,23 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
               {link.name}
             </button>
           )}
-          <div className="pt-4 px-4">
+          <div className="pt-4 px-4 flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="rounded-full text-muted-foreground hover:text-foreground hover:bg-white/5"
+              aria-label="Toggle theme">
+
+              {theme === 'dark' ?
+              <Sun className="h-5 w-5" /> :
+
+              <Moon className="h-5 w-5" />
+              }
+            </Button>
             <Button
               size="default"
-              className="w-full bg-primary text-black font-semibold">
+              className="flex-1 bg-primary text-black font-semibold">
 
               Get a Quote
             </Button>

@@ -68,14 +68,17 @@ export function Footer() {
   }];
 
   return (
-    <footer className="w-full border-t border-white/10 bg-black">
+    <footer className="w-full border-t border-border bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-foreground flex items-center gap-2" style={{
-              color: "#c8c1c1"
-            }}>
+            <h3
+              className="text-2xl font-bold text-foreground flex items-center gap-2"
+              style={{
+                color: '#c8c1c1'
+              }}>
+
               <span className="text-primary">Em</span>Dreams
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -141,7 +144,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-6">
           <p className="text-sm text-muted-foreground">
             © 2024 EmDreams. All rights reserved.
           </p>
