@@ -8,6 +8,7 @@ type NavbarProps = {
 };
 export function Navbar({ currentPage, onNavigate }: NavbarProps) {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   useEffect(() => {
     // Check localStorage or system preference on mount
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -104,8 +105,9 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
 
           {/* Mobile Menu Button */}
           <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-white/5"
-            aria-label="Open menu">
+            aria-label="Toggle menu">
 
             <svg
               className="h-6 w-6"
@@ -116,44 +118,53 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
               viewBox="0 0 24 24"
               stroke="currentColor">
 
-              <path d="M4 6h16M4 12h16M4 18h16" />
+              {mobileMenuOpen ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
         </div>
 
         {/* Mobile Navigation - Simple version */}
-        <div className="md:hidden pb-4 pt-2 space-y-1">
-          {navLinks.map((link) =>
-          <button
-            key={link.id}
-            onClick={() => onNavigate(link.id)}
-            className={`block w-full text-left px-4 py-2 text-sm font-medium rounded-md transition-colors ${currentPage === link.id ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}>
+        {mobileMenuOpen && (
+          <div className="md:hidden pb-4 pt-2 space-y-1">
+            {navLinks.map((link) =>
+            <button
+              key={link.id}
+              onClick={() => {
+                onNavigate(link.id);
+                setMobileMenuOpen(false);
+              }}
+              className={`block w-full text-left px-4 py-2 text-sm font-medium rounded-md transition-colors ${currentPage === link.id ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}>
 
-              {link.name}
-            </button>
-          )}
-          <div className="pt-4 px-4 flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full text-muted-foreground hover:text-foreground hover:bg-white/5"
-              aria-label="Toggle theme">
+                {link.name}
+              </button>
+            )}
+            <div className="pt-4 px-4 flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="rounded-full text-muted-foreground hover:text-foreground hover:bg-white/5"
+                aria-label="Toggle theme">
 
-              {theme === 'dark' ?
-              <Sun className="h-5 w-5" /> :
+                {theme === 'dark' ?
+                <Sun className="h-5 w-5" /> :
 
-              <Moon className="h-5 w-5" />
-              }
-            </Button>
-            <Button
-              size="default"
-              className="flex-1 bg-primary text-black font-semibold">
+                <Moon className="h-5 w-5" />
+                }
+              </Button>
+              <Button
+                size="default"
+                className="flex-1 bg-primary text-black font-semibold">
 
-              Get a Quote
-            </Button>
+                Get a Quote
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </nav>);
 
