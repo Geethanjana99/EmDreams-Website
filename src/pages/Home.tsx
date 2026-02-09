@@ -198,7 +198,7 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* Services Overview */}
-      <SectionContainer className="bg-muted/30 relative">
+      <SectionContainer className="bg-muted/30 relative min-h-[600px]">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
@@ -225,48 +225,50 @@ export function Home({ onNavigate }: HomeProps) {
       </SectionContainer>
 
       {/* How We Work */}
-      <SectionContainer className="relative overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-full h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10" />
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
-            PROCESS
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">How We Work</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A proven methodology for exceptional results
-          </p>
-        </div>
+      <SectionContainer className="relative overflow-hidden bg-background min-h-[800px] pb-32">
+        <div className="absolute top-1/2 left-0 w-full h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10 pointer-events-none" />
+        <div className="relative z-10">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+              PROCESS
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">How We Work</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A proven methodology for exceptional results
+            </p>
+          </div>
 
-        <div className="relative">
-          {/* Connecting Line (Desktop) */}
-          <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="relative pb-8">
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {workSteps.map((step, index) =>
-            <div key={step.number} className="relative group">
-                <div className="w-24 h-24 mx-auto bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                  <span className="text-3xl font-bold text-primary">
-                    {step.number}
-                  </span>
+            <div className="grid md:grid-cols-3 gap-8">
+              {workSteps.map((step, index) =>
+              <div key={step.number} className="relative group">
+                  <div className="w-24 h-24 mx-auto bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <span className="text-3xl font-bold text-primary">
+                      {step.number}
+                    </span>
+                  </div>
+                  <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-colors text-center h-full min-h-[200px]">
+                    <CardContent className="pt-8 pb-8 px-6">
+                      <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                        {step.title}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {step.description}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-colors text-center h-full">
-                  <CardContent className="pt-8 pb-8 px-6">
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                      {step.title}
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {step.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </SectionContainer>
 
       {/* Team Preview */}
-      <SectionContainer className="bg-muted/30">
+      <SectionContainer className="bg-muted/30 relative z-0 min-h-[800px]">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
             THE SQUAD
@@ -294,7 +296,7 @@ export function Home({ onNavigate }: HomeProps) {
       </SectionContainer>
 
       {/* Featured Work */}
-      <SectionContainer>
+      <SectionContainer className="min-h-[700px]">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
             PORTFOLIO
@@ -323,7 +325,7 @@ export function Home({ onNavigate }: HomeProps) {
       </SectionContainer>
 
       {/* CTA Section */}
-      <SectionContainer className="pb-24">
+      <SectionContainer className="pb-24 min-h-[400px]">
         <div className="relative rounded-3xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-90" />
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />

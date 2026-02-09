@@ -13,75 +13,7 @@ export function Portfolio() {
     activeFilter === 'all'
       ? projects
       : projects.filter((project) => project.category === activeFilter);
-    image:
-    'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Create an engaging fitness app that motivates users through social features and gamification.',
-      solution:
-      'Built a native mobile app with real-time activity tracking, social feeds, challenges, and integration with popular fitness wearables.',
-      results: [
-      '100,000+ downloads in first 6 months',
-      '70% monthly active user retention',
-      'Featured in App Store',
-      'Average session time of 25 minutes'],
 
-      technologies: [
-      'Swift',
-      'Kotlin',
-      'Firebase',
-      'HealthKit',
-      'Google Fit']
-
-    }
-  },
-  {
-    title: 'Cloud Migration Project',
-    category: 'cloud',
-    description:
-    'Enterprise infrastructure migration from on-premise to AWS cloud.',
-    image:
-    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Large enterprise needed to migrate legacy infrastructure to the cloud without disrupting business operations.',
-      solution:
-      'Designed and executed a phased migration strategy with zero downtime, implementing modern DevOps practices and cost optimization.',
-      results: [
-      '60% reduction in infrastructure costs',
-      'Zero downtime during migration',
-      '10x faster deployment cycles',
-      'Improved system reliability to 99.99%'],
-
-      technologies: ['AWS', 'Docker', 'Kubernetes', 'Terraform', 'Jenkins']
-    }
-  },
-  {
-    title: 'Real Estate Portal',
-    category: 'web',
-    description:
-    'Property listing platform with virtual tours and AI-powered recommendations.',
-    image:
-    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Real estate company wanted to differentiate with innovative features like virtual tours and smart property matching.',
-      solution:
-      'Developed a modern web platform with 3D virtual tours, AI-powered property recommendations, and integrated mortgage calculators.',
-      results: [
-      '300% increase in user engagement',
-      '45% reduction in time-to-sale',
-      '50,000+ property listings',
-      'Winner of PropTech Innovation Award'],
-
-      technologies: ['React', 'Three.js', 'Python', 'TensorFlow', 'MongoDB']
-    }
-  }];
-
-  const filteredProjects =
-  activeFilter === 'all' ?
-  projects :
-  projects.filter((p) => p.category === activeFilter);
   return (
     <div className="w-full">
       <SectionContainer className="pt-24 pb-12">
