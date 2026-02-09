@@ -107,7 +107,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: "Chamod Malindu",
     role: "Business Analyst",
-    department: "Business",
+    department: "management",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
     bio: "Backend specialist with deep knowledge in distributed systems and microservices. Passionate about scalable architecture.",
@@ -150,7 +150,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: "Chanuth Hewawissa",
     role: "Assignment Section Head",
-    department: "development",
+    department: "management",
     image: chanuthPic,
     bio: "Assignment section head with expertise in project coordination and team management. Focused on delivering quality assignments on time.",
     skills: [
