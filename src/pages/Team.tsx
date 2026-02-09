@@ -1,103 +1,18 @@
-import React, { useState, Component } from 'react';
+import React, { useState } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { TeamMemberCard } from '../components/TeamMemberCard';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { teamMembers } from '../data/team';
+import { TEAM_DEPARTMENTS } from '../constants';
+
 export function Team() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const filters = [
-  {
-    id: 'all',
-    name: 'All Team'
-  },
-  {
-    id: 'development',
-    name: 'Development'
-  },
-  {
-    id: 'design',
-    name: 'Design'
-  },
-  {
-    id: 'management',
-    name: 'Management'
-  }];
 
-  const teamMembers = [
-  {
-    name: 'Sarah Chen',
-    role: 'Lead Developer',
-    department: 'development',
-    image:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    bio: 'Full-stack developer with 8+ years of experience building scalable web applications. Passionate about clean code and mentoring junior developers.',
-    skills: ['React', 'Node.js', 'AWS', 'TypeScript', 'GraphQL'],
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
-  },
-  {
-    name: 'Marcus Rodriguez',
-    role: 'UI/UX Designer',
-    department: 'design',
-    image:
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    bio: 'Creative designer focused on crafting intuitive and beautiful user experiences. Believer in user-centered design and continuous iteration.',
-    skills: [
-    'Figma',
-    'Design Systems',
-    'User Research',
-    'Prototyping',
-    'Accessibility'],
-
-    social: {
-      github: '#',
-      linkedin: '#'
-    }
-  },
-  {
-    name: 'Emily Watson',
-    role: 'Project Manager',
-    department: 'management',
-    image:
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
-    bio: 'Experienced PM ensuring projects are delivered on time and exceed expectations. Expert in agile methodologies and stakeholder management.',
-    skills: [
-    'Agile',
-    'Stakeholder Management',
-    'Risk Assessment',
-    'Scrum',
-    'JIRA'],
-
-    social: {
-      linkedin: '#',
-      twitter: '#'
-    }
-  },
-  {
-    name: 'David Kim',
-    role: 'Mobile Developer',
-    department: 'development',
-    image:
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
-    bio: 'Mobile development specialist with expertise in both iOS and Android platforms. Focused on performance optimization and native experiences.',
-    skills: [
-    'React Native',
-    'Swift',
-    'Kotlin',
-    'Mobile UI',
-    'App Store Optimization'],
-
-    social: {
-      github: '#',
-      linkedin: '#'
-    }
-  },
-  {
-    name: 'Lisa Anderson',
-    role: 'Product Designer',
+  const filteredMembers =
+    activeFilter === 'all'
+      ? teamMembers
+      : teamMembers.filter((member) => member.department === activeFilter);
     department: 'design',
     image:
     'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop',
@@ -207,7 +122,7 @@ export function Team() {
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {filters.map((filter) =>
+          {TEAM_DEPARTMENTS.map((filter) =>
           <Button
             key={filter.id}
             variant="outline"

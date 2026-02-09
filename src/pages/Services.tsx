@@ -4,100 +4,21 @@ import { PackageCard } from '../components/PackageCard';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import { Badge } from '../components/ui/badge';
 import { CheckIcon, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
+import { serviceCategories as serviceCategoriesData } from '../data/servicePackages';
+import type { ServiceCategory } from '../types';
+
 export function Services() {
-  const serviceCategories = [
-  {
-    id: 'web',
-    name: 'Web Development',
-    icon: CodeIcon,
-    summary:
-    'Build powerful, scalable web applications that deliver exceptional user experiences and drive business growth.',
-    benefits: [
-    'Custom web applications tailored to your needs',
-    'Responsive design for all devices',
-    'Modern tech stack (React, Node.js, etc.)',
-    'SEO optimization and performance tuning',
-    'Ongoing maintenance and support'],
-
-    packages: [
-    {
-      name: 'Starter',
-      price: '$5,000',
-      description: 'Perfect for small businesses and startups',
-      features: [
-      'Up to 5 pages',
-      'Responsive design',
-      'Contact form integration',
-      'Basic SEO setup',
-      '30 days support']
-
-    },
-    {
-      name: 'Growth',
-      price: '$12,000',
-      description: 'Ideal for growing businesses',
-      features: [
-      'Up to 15 pages',
-      'Custom functionality',
-      'CMS integration',
-      'Advanced SEO',
-      'Analytics setup',
-      '90 days support'],
-
-      highlighted: true
-    },
-    {
-      name: 'Pro',
-      price: '$25,000+',
-      description: 'Enterprise-grade solutions',
-      features: [
-      'Unlimited pages',
-      'Complex integrations',
-      'Custom admin panel',
-      'Performance optimization',
-      'Security audit',
-      '6 months support']
-
-    }]
-
-  },
-  {
-    id: 'mobile',
-    name: 'Mobile Apps',
-    icon: SmartphoneIcon,
-    summary:
-    'Create engaging mobile experiences that connect with your users on iOS and Android platforms.',
-    benefits: [
-    'Native or cross-platform development',
-    'Intuitive user interface design',
-    'Push notifications and real-time features',
-    'App store optimization',
-    'Backend API development'],
-
-    packages: [
-    {
-      name: 'Starter',
-      price: '$15,000',
-      description: 'Simple mobile app for one platform',
-      features: [
-      'iOS or Android',
-      'Up to 5 screens',
-      'Basic features',
-      'App store submission',
-      '60 days support']
-
-    },
-    {
-      name: 'Growth',
-      price: '$30,000',
-      description: 'Full-featured cross-platform app',
-      features: [
-      'iOS and Android',
-      'Up to 15 screens',
-      'Advanced features',
-      'Backend integration',
-      'Push notifications',
-      '90 days support'],
+  // Merge icons with data
+  const iconMap = {
+    web: CodeIcon,
+    mobile: SmartphoneIcon,
+    cloud: CloudIcon,
+  };
+  
+  const serviceCategories: ServiceCategory[] = serviceCategoriesData.map(category => ({
+    ...category,
+    icon: iconMap[category.id as keyof typeof iconMap],
+  }));
 
       highlighted: true
     },

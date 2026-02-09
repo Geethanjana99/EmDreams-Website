@@ -6,129 +6,35 @@ import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import {
-  CodeIcon,
-  SmartphoneIcon,
-  CloudIcon,
-  ArrowRightIcon,
-  Terminal,
-  Layers,
-  Cpu } from
-'lucide-react';
+import { ArrowRightIcon, Layers, Cpu, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
+import { servicesData, workSteps } from '../data/services';
+import { teamMembers } from '../data/team';
+import { projects } from '../data/projects';
+import { COMPANY_INFO, AVAILABILITY } from '../constants';
+import type { Service } from '../types';
+
 type HomeProps = {
   onNavigate: (page: string) => void;
 };
+
 export function Home({ onNavigate }: HomeProps) {
-  const services = [
-  {
-    icon: CodeIcon,
-    title: 'Web Development',
-    description:
-    'Custom web applications built with modern technologies for optimal performance and user experience.'
-  },
-  {
-    icon: SmartphoneIcon,
-    title: 'Mobile Apps',
-    description:
-    'Native and cross-platform mobile solutions that engage users and drive business growth.'
-  },
-  {
-    icon: CloudIcon,
-    title: 'Cloud Solutions',
-    description:
-    'Scalable cloud infrastructure and services to power your digital transformation.'
-  }];
-
-  const workSteps = [
-  {
-    number: '01',
-    title: 'Discover',
-    description:
-    'We dive deep into your business goals, target audience, and technical requirements to create a solid foundation.'
-  },
-  {
-    number: '02',
-    title: 'Build',
-    description:
-    'Our team develops your solution using agile methodology, with regular check-ins and iterative improvements.'
-  },
-  {
-    number: '03',
-    title: 'Launch',
-    description:
-    'We deploy your product, provide training, and offer ongoing support to ensure long-term success.'
-  }];
-
-  const featuredTeam = [
-  {
-    name: 'Sarah Chen',
-    role: 'Lead Developer',
-    image:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    bio: 'Full-stack developer with 8+ years of experience building scalable web applications.',
-    skills: ['React', 'Node.js', 'AWS'],
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
-  },
-  {
-    name: 'Marcus Rodriguez',
-    role: 'UI/UX Designer',
-    image:
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    bio: 'Creative designer focused on crafting intuitive and beautiful user experiences.',
-    skills: ['Figma', 'Design Systems', 'User Research'],
-    social: {
-      github: '#',
-      linkedin: '#'
-    }
-  },
-  {
-    name: 'Emily Watson',
-    role: 'Project Manager',
-    image:
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
-    bio: 'Experienced PM ensuring projects are delivered on time and exceed expectations.',
-    skills: ['Agile', 'Stakeholder Management', 'Risk Assessment'],
-    social: {
-      linkedin: '#',
-      twitter: '#'
-    }
-  }];
-
-  const featuredProjects = [
-  {
-    title: 'FinTech Dashboard',
-    category: 'Web App',
-    description:
-    'Real-time financial analytics platform for investment firms.',
-    image:
-    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-    details: {
-      challenge: 'Client needed real-time data visualization',
-      solution: 'Built responsive dashboard with WebSocket integration',
-      results: [
-      '40% faster data processing',
-      'Improved user engagement by 65%'],
-
-      technologies: ['React', 'D3.js', 'WebSocket']
-    }
-  },
-  {
-    title: 'Healthcare Mobile App',
-    category: 'Mobile',
-    description: 'Patient management system for healthcare providers.',
-    image:
-    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop',
-    details: {
-      challenge: 'Secure patient data access on mobile',
-      solution: 'HIPAA-compliant mobile app with biometric authentication',
-      results: ['99.9% uptime', '50,000+ active users'],
-      technologies: ['React Native', 'Node.js', 'PostgreSQL']
-    }
-  }];
+  // Merge icons with service data
+  const iconMap = {
+    'Web Development': CodeIcon,
+    'Mobile Apps': SmartphoneIcon,
+    'Cloud Solutions': CloudIcon,
+  };
+  
+  const services: Service[] = servicesData.map(service => ({
+    ...service,
+    icon: iconMap[service.title as keyof typeof iconMap],
+  }));
+  
+  // Get featured team members (first 3)
+  const featuredTeam = teamMembers.slice(0, 3);
+  
+  // Get featured projects (first 2)
+  const featuredProjects = projects.slice(0, 2);
 
   return (
     <div className="w-full overflow-hidden">
@@ -147,19 +53,18 @@ export function Home({ onNavigate }: HomeProps) {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-xs font-medium text-primary tracking-wider uppercase">
-                  Available for new projects
+                  {AVAILABILITY.message}
                 </span>
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-                <span className="block text-foreground">Build.</span>
-                <span className="block text-gradient">Market.</span>
-                <span className="block text-foreground">Deliver.</span>
+                <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[0]}.</span>
+                <span className="block text-gradient">{COMPANY_INFO.tagline.split('.')[1]}.</span>
+                <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[2]}.</span>
               </h1>
 
               <p className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
-                We transform your ambitious ideas into powerful digital
-                solutions that drive growth and deliver measurable results.
+                {COMPANY_INFO.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -183,19 +88,19 @@ export function Home({ onNavigate }: HomeProps) {
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
                 <div>
-                  <div className="text-3xl font-bold text-primary">150+</div>
+                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.projectsCompleted}+</div>
                   <div className="text-sm text-muted-foreground mt-1">
                     Projects
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary">50+</div>
+                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.clientsServed}+</div>
                   <div className="text-sm text-muted-foreground mt-1">
                     Clients
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary">8+</div>
+                  <div className="text-3xl font-bold text-primary">{COMPANY_INFO.stats.yearsOfExperience}+</div>
                   <div className="text-sm text-muted-foreground mt-1">
                     Years
                   </div>

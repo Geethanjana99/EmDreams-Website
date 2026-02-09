@@ -3,101 +3,16 @@ import { SectionContainer } from '../components/layout/SectionContainer';
 import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { projects } from '../data/projects';
+import { PROJECT_CATEGORIES } from '../constants';
+
 export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const categories = [
-  {
-    id: 'all',
-    name: 'All Projects'
-  },
-  {
-    id: 'web',
-    name: 'Web Apps'
-  },
-  {
-    id: 'mobile',
-    name: 'Mobile'
-  },
-  {
-    id: 'cloud',
-    name: 'Cloud'
-  }];
 
-  const projects = [
-  {
-    title: 'FinTech Dashboard',
-    category: 'web',
-    description:
-    'Real-time financial analytics platform for investment firms with advanced data visualization.',
-    image:
-    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Client needed a real-time data visualization platform that could handle millions of data points while maintaining performance.',
-      solution:
-      'Built a responsive dashboard with WebSocket integration for live data updates, optimized rendering with virtual scrolling, and implemented efficient data caching strategies.',
-      results: [
-      '40% faster data processing compared to legacy system',
-      'Improved user engagement by 65%',
-      'Reduced server costs by 30% through optimization',
-      'Successfully handling 10M+ daily transactions'],
-
-      technologies: ['React', 'D3.js', 'WebSocket', 'Redis', 'PostgreSQL']
-    }
-  },
-  {
-    title: 'Healthcare Mobile App',
-    category: 'mobile',
-    description:
-    'HIPAA-compliant patient management system for healthcare providers.',
-    image:
-    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Healthcare provider needed secure mobile access to patient data while maintaining HIPAA compliance and ensuring excellent user experience.',
-      solution:
-      'Developed a cross-platform mobile app with biometric authentication, end-to-end encryption, and offline capabilities for areas with poor connectivity.',
-      results: [
-      '99.9% uptime since launch',
-      '50,000+ active healthcare professionals',
-      'Zero security incidents',
-      'Average 4.8-star rating on app stores'],
-
-      technologies: [
-      'React Native',
-      'Node.js',
-      'PostgreSQL',
-      'AWS',
-      'Biometric Auth']
-
-    }
-  },
-  {
-    title: 'E-commerce Platform',
-    category: 'web',
-    description:
-    'Scalable online marketplace connecting buyers and sellers globally.',
-    image:
-    'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop',
-    details: {
-      challenge:
-      'Client wanted to build a marketplace that could scale to millions of users while providing a seamless shopping experience.',
-      solution:
-      'Architected a microservices-based platform with advanced search, real-time inventory management, and integrated payment processing.',
-      results: [
-      '$5M+ in monthly transactions',
-      '200,000+ registered users',
-      'Sub-second search response times',
-      '35% increase in conversion rate'],
-
-      technologies: ['Next.js', 'GraphQL', 'Elasticsearch', 'Stripe', 'AWS']
-    }
-  },
-  {
-    title: 'Fitness Tracking App',
-    category: 'mobile',
-    description:
-    'Social fitness platform with workout tracking and community features.',
+  const filteredProjects =
+    activeFilter === 'all'
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
     image:
     'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=600&fit=crop',
     details: {
@@ -183,7 +98,7 @@ export function Portfolio() {
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {categories.map((category) =>
+          {PROJECT_CATEGORIES.map((category) =>
           <Button
             key={category.id}
             variant="outline"
