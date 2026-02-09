@@ -315,11 +315,16 @@ export function Home({ onNavigate }: HomeProps) {
         {/* Mobile View - Horizontal Scroll */}
         <div className="md:hidden mb-16 -mx-4 px-4">
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4">
-            {featuredTeam.map((member, index) => {
+            {(() => {
+              // Reorder to show CEO (index 2) first
               const middleIndex = 2;
-              const isCEO = index === middleIndex;
+              const reorderedTeam = [
+                featuredTeam[middleIndex], // CEO first
+                ...featuredTeam.slice(0, middleIndex), // Members before CEO
+                ...featuredTeam.slice(middleIndex + 1), // Members after CEO
+              ];
               
-              return (
+              return reorderedTeam.map((member, index) => (
                 <div
                   key={member.name}
                   className="flex-shrink-0 snap-center first:ml-4 last:mr-4"
@@ -328,8 +333,8 @@ export function Home({ onNavigate }: HomeProps) {
                     <TeamMemberCard member={member} />
                   </div>
                 </div>
-              );
-            })}
+              ));
+            })()}
           </div>
           <div className="flex justify-center gap-2 mt-4">
             {featuredTeam.map((_, index) => (
