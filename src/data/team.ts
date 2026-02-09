@@ -15,7 +15,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: "Sayuru Herath",
     role: "Software Engineer",
-    department: "Development",
+    department: "development",
     image: sayuruPic,
     bio: "Creative designer focused on crafting intuitive and beautiful user experiences. Believer in user-centered design and continuous iteration.",
     skills: [
