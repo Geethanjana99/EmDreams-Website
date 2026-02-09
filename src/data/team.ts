@@ -6,6 +6,7 @@ import kashmilaPic from "../assets/team/kashmila-dharmasiri.jpeg";
 import sadewPic from "../assets/team/sadew-hiruditha.jpeg";
 import kanushkaPic from "../assets/team/kanushka-gayan.jpeg";
 import chanuthPic from "../assets/team/chanuth-hewawissa.jpeg";
+import ashanPic from "../assets/team/ashan-miyuru.jpeg";
 
 // Note: Replace these placeholder images with your actual team photos
 // Or remove the image URLs entirely and handle missing images in your component
@@ -120,8 +121,7 @@ export const teamMembers: TeamMember[] = [
     name: "Ashan Miyuru",
     role: "DevOps Engineer",
     department: "development",
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
+    image: ashanPic,
     bio: "DevOps expert focused on automation and continuous integration. Believes in infrastructure as code and monitoring.",
     skills: ["AWS", "Terraform", "Jenkins", "Monitoring", "CI/CD"],
     social: {
