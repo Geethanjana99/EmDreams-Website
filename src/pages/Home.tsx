@@ -1,0 +1,445 @@
+import React from 'react';
+import { SectionContainer } from '../components/layout/SectionContainer';
+import { ServiceCard } from '../components/ServiceCard';
+import { TeamMemberCard } from '../components/TeamMemberCard';
+import { ProjectCard } from '../components/ProjectCard';
+import { Button } from '../components/ui/button';
+import { Card, CardContent } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
+import {
+  CodeIcon,
+  SmartphoneIcon,
+  CloudIcon,
+  ArrowRightIcon,
+  Terminal,
+  Layers,
+  Cpu } from
+'lucide-react';
+type HomeProps = {
+  onNavigate: (page: string) => void;
+};
+export function Home({ onNavigate }: HomeProps) {
+  const services = [
+  {
+    icon: CodeIcon,
+    title: 'Web Development',
+    description:
+    'Custom web applications built with modern technologies for optimal performance and user experience.'
+  },
+  {
+    icon: SmartphoneIcon,
+    title: 'Mobile Apps',
+    description:
+    'Native and cross-platform mobile solutions that engage users and drive business growth.'
+  },
+  {
+    icon: CloudIcon,
+    title: 'Cloud Solutions',
+    description:
+    'Scalable cloud infrastructure and services to power your digital transformation.'
+  }];
+
+  const workSteps = [
+  {
+    number: '01',
+    title: 'Discover',
+    description:
+    'We dive deep into your business goals, target audience, and technical requirements to create a solid foundation.'
+  },
+  {
+    number: '02',
+    title: 'Build',
+    description:
+    'Our team develops your solution using agile methodology, with regular check-ins and iterative improvements.'
+  },
+  {
+    number: '03',
+    title: 'Launch',
+    description:
+    'We deploy your product, provide training, and offer ongoing support to ensure long-term success.'
+  }];
+
+  const featuredTeam = [
+  {
+    name: 'Sarah Chen',
+    role: 'Lead Developer',
+    image:
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    bio: 'Full-stack developer with 8+ years of experience building scalable web applications.',
+    skills: ['React', 'Node.js', 'AWS'],
+    social: {
+      github: '#',
+      linkedin: '#',
+      twitter: '#'
+    }
+  },
+  {
+    name: 'Marcus Rodriguez',
+    role: 'UI/UX Designer',
+    image:
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    bio: 'Creative designer focused on crafting intuitive and beautiful user experiences.',
+    skills: ['Figma', 'Design Systems', 'User Research'],
+    social: {
+      github: '#',
+      linkedin: '#'
+    }
+  },
+  {
+    name: 'Emily Watson',
+    role: 'Project Manager',
+    image:
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
+    bio: 'Experienced PM ensuring projects are delivered on time and exceed expectations.',
+    skills: ['Agile', 'Stakeholder Management', 'Risk Assessment'],
+    social: {
+      linkedin: '#',
+      twitter: '#'
+    }
+  }];
+
+  const featuredProjects = [
+  {
+    title: 'FinTech Dashboard',
+    category: 'Web App',
+    description:
+    'Real-time financial analytics platform for investment firms.',
+    image:
+    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+    details: {
+      challenge: 'Client needed real-time data visualization',
+      solution: 'Built responsive dashboard with WebSocket integration',
+      results: [
+      '40% faster data processing',
+      'Improved user engagement by 65%'],
+
+      technologies: ['React', 'D3.js', 'WebSocket']
+    }
+  },
+  {
+    title: 'Healthcare Mobile App',
+    category: 'Mobile',
+    description: 'Patient management system for healthcare providers.',
+    image:
+    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop',
+    details: {
+      challenge: 'Secure patient data access on mobile',
+      solution: 'HIPAA-compliant mobile app with biometric authentication',
+      results: ['99.9% uptime', '50,000+ active users'],
+      technologies: ['React Native', 'Node.js', 'PostgreSQL']
+    }
+  }];
+
+  return (
+    <div className="w-full overflow-hidden">
+      {/* MODERN CREATIVE HERO SECTION */}
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden bg-background">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background z-10" />
+        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-600/10 rounded-full blur-[100px]" />
+
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Hero Text Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-xs font-medium text-primary tracking-wider uppercase">
+                  Available for new projects
+                </span>
+              </div>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+                <span className="block text-foreground">Build.</span>
+                <span className="block text-gradient">Market.</span>
+                <span className="block text-foreground">Deliver.</span>
+              </h1>
+
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
+                We transform your ambitious ideas into powerful digital
+                solutions that drive growth and deliver measurable results.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button
+                  size="lg"
+                  onClick={() => onNavigate('contact')}
+                  className="bg-primary hover:bg-primary/90 text-black font-bold text-lg px-8 h-14 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] transition-all duration-300">
+
+                  Start Your Project
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => onNavigate('portfolio')}
+                  className="border-white/20 hover:border-primary hover:text-primary h-14 px-8 text-lg bg-transparent backdrop-blur-sm">
+
+                  View Our Work
+                </Button>
+              </div>
+
+              {/* Stats Row */}
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
+                <div>
+                  <div className="text-3xl font-bold text-primary">150+</div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    Projects
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-primary">50+</div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    Clients
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-primary">8+</div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    Years
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Creative Visual - Bento Grid Mockup */}
+            <div className="relative hidden lg:block">
+              <div className="relative w-full aspect-square max-w-[600px] mx-auto perspective-1000">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-3xl blur-2xl transform rotate-6" />
+
+                <div className="grid grid-cols-2 gap-4 h-full transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700 ease-out">
+                  {/* Card 1: Code Editor */}
+                  <div className="col-span-2 bg-[#1e1e1e] rounded-2xl border border-white/10 p-4 shadow-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 mb-4 border-b border-white/5 pb-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <div className="ml-auto text-xs text-white/30">
+                        App.tsx
+                      </div>
+                    </div>
+                    <div className="space-y-2 font-mono text-xs">
+                      <div className="text-purple-400">
+                        import <span className="text-white">React</span> from{' '}
+                        <span className="text-green-400">'react'</span>
+                      </div>
+                      <div className="text-blue-400">
+                        function <span className="text-yellow-400">App</span>(){' '}
+                        {'{'}
+                      </div>
+                      <div className="pl-4 text-white">return (</div>
+                      <div className="pl-8 text-white">
+                        {'<'}div className=
+                        <span className="text-green-400">"hero"</span>
+                        {'>'}
+                      </div>
+                      <div className="pl-12 text-white">
+                        {'<'}h1{'>'}Hello World{'<'}/h1{'>'}
+                      </div>
+                      <div className="pl-8 text-white">
+                        {'<'}/div{'>'}
+                      </div>
+                      <div className="pl-4 text-white">)</div>
+                      <div className="text-white">{'}'}</div>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Analytics */}
+                  <div className="bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 shadow-2xl flex flex-col justify-between group hover:border-primary/50 transition-colors">
+                    <div className="flex justify-between items-start">
+                      <div className="p-2 bg-primary/20 rounded-lg text-primary">
+                        <Layers size={20} />
+                      </div>
+                      <span className="text-xs text-green-400 font-mono">
+                        +24%
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-white">84.5k</div>
+                      <div className="text-xs text-white/50">Total Views</div>
+                    </div>
+                    <div className="h-1 w-full bg-white/10 rounded-full mt-2 overflow-hidden">
+                      <div className="h-full bg-primary w-[70%]" />
+                    </div>
+                  </div>
+
+                  {/* Card 3: Server Status */}
+                  <div className="bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 shadow-2xl flex flex-col justify-between group hover:border-primary/50 transition-colors">
+                    <div className="flex justify-between items-start">
+                      <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
+                        <Cpu size={20} />
+                      </div>
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-white">99.9%</div>
+                      <div className="text-xs text-white/50">Uptime</div>
+                    </div>
+                    <div className="flex gap-1 mt-2">
+                      {[1, 2, 3, 4, 5].map((i) =>
+                      <div
+                        key={i}
+                        className="h-6 flex-1 bg-green-500/20 rounded-sm" />
+
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <SectionContainer className="bg-muted/30 relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="text-center mb-16">
+          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+            OUR SERVICES
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Comprehensive Solutions
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Digital expertise tailored to your business needs
+          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {services.map((service) =>
+          <ServiceCard
+            key={service.title}
+            icon={service.icon}
+            title={service.title}
+            description={service.description}
+            onLearnMore={() => onNavigate('services')} />
+
+          )}
+        </div>
+      </SectionContainer>
+
+      {/* How We Work */}
+      <SectionContainer className="relative overflow-hidden">
+        <div className="absolute top-1/2 left-0 w-full h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10" />
+        <div className="text-center mb-16">
+          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+            PROCESS
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">How We Work</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            A proven methodology for exceptional results
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {workSteps.map((step, index) =>
+            <div key={step.number} className="relative group">
+                <div className="w-24 h-24 mx-auto bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                  <span className="text-3xl font-bold text-primary">
+                    {step.number}
+                  </span>
+                </div>
+                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-colors text-center h-full">
+                  <CardContent className="pt-8 pb-8 px-6">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {step.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+        </div>
+      </SectionContainer>
+
+      {/* Team Preview */}
+      <SectionContainer className="bg-muted/30">
+        <div className="text-center mb-16">
+          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+            THE SQUAD
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Meet Our Team</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Talented professionals dedicated to your success
+          </p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {featuredTeam.map((member) =>
+          <TeamMemberCard key={member.name} member={member} />
+          )}
+        </div>
+        <div className="text-center">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => onNavigate('team')}
+            className="border-white/10 hover:border-primary hover:text-primary">
+
+            View All Team Members
+          </Button>
+        </div>
+      </SectionContainer>
+
+      {/* Featured Work */}
+      <SectionContainer>
+        <div className="text-center mb-16">
+          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+            PORTFOLIO
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Featured Work</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Recent projects that showcase our expertise
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {featuredProjects.map((project) =>
+          <ProjectCard key={project.title} project={project} />
+          )}
+        </div>
+        <div className="text-center">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => onNavigate('portfolio')}
+            className="group border-white/10 hover:border-primary hover:text-primary">
+
+            See Full Portfolio{' '}
+            <ArrowRightIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+      </SectionContainer>
+
+      {/* CTA Section */}
+      <SectionContainer className="pb-24">
+        <div className="relative rounded-3xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-90" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
+          <div className="relative z-10 p-12 sm:p-20 text-center">
+            <h2 className="text-3xl sm:text-5xl font-bold mb-6 text-black">
+              Ready to Start Your Project?
+            </h2>
+            <p className="text-xl text-black/80 mb-10 max-w-2xl mx-auto font-medium">
+              Let's discuss how we can help bring your vision to life with our
+              expert team and proven process.
+            </p>
+            <Button
+              size="lg"
+              onClick={() => onNavigate('contact')}
+              className="bg-black text-white hover:bg-black/80 border-none h-14 px-8 text-lg shadow-xl">
+
+              Get in Touch
+            </Button>
+          </div>
+        </div>
+      </SectionContainer>
+    </div>);
+
+}

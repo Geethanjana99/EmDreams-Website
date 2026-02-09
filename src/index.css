@@ -1,0 +1,93 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* DARK MODE DEFAULT */
+    --background: 0 0% 5%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 24 95% 53%; /* Vibrant Orange */
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 24 50% 12%;
+    --accent-foreground: 24 95% 65%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.5rem;
+  }
+
+  :root[class~="light"] {
+    /* LIGHT MODE OVERRIDES */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    --primary: 24 95% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 15% 95%;
+    --secondary-foreground: 0 0% 7%;
+
+    --muted: 30 15% 95%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 24 90% 95%;
+    --accent-foreground: 24 95% 50%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 10% 90%;
+    --input: 30 10% 90%;
+    --ring: 24 95% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Utilities for Creative Design */
+@layer utilities {
+  .bg-grid-white {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+  }
+  .bg-dot-white {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='rgb(255 255 255 / 0.05)'%3e%3ccircle cx='1' cy='1' r='1'/%3e%3c/svg%3e");
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-400;
+  }
+}
