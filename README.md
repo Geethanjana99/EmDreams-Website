@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="src/assets/Emdreams Logo.png" alt="EmDreams Logo" width="300"/>
+</div>
+
 # EmDreams Website
 
 Official website for EmDreams - A software development company specializing in web development, mobile applications, and cloud solutions.
