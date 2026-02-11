@@ -24,8 +24,22 @@ import {
   AccordionTrigger } from
 '../components/ui/accordion';
 import { Badge } from '../components/ui/badge';
-import { MailIcon, MessageSquareIcon, MapPinIcon, SendIcon } from 'lucide-react';
+import { SendIcon, MailIcon, MessageSquareIcon, MapPinIcon } from 'lucide-react';
+import { contactInfoData, faqs } from '../data/contact';
+import type { ContactInfo } from '../types';
+
 export function Contact() {
+  // Merge icons with data
+  const iconMap = {
+    Email: MailIcon,
+    WhatsApp: MessageSquareIcon,
+    Location: MapPinIcon,
+  };
+  
+  const contactInfo: ContactInfo[] = contactInfoData.map(info => ({
+    ...info,
+    icon: iconMap[info.title as keyof typeof iconMap],
+  }));
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,52 +51,6 @@ export function Contact() {
     console.log('Form submitted:', formData);
     // Handle form submission
   };
-  const contactInfo = [
-  {
-    icon: MailIcon,
-    title: 'Email',
-    description: 'hello@emdreams.com',
-    action: 'Send us an email'
-  },
-  {
-    icon: MessageSquareIcon,
-    title: 'WhatsApp',
-    description: '+1 (555) 123-4567',
-    action: 'Chat with us'
-  },
-  {
-    icon: MapPinIcon,
-    title: 'Location',
-    description: 'San Francisco, CA',
-    action: 'View on map'
-  }];
-
-  const faqs = [
-  {
-    question: 'What is your typical project timeline?',
-    answer:
-    'Project timelines vary based on scope and complexity. A simple website typically takes 4-6 weeks, while complex applications can take 3-6 months. We provide detailed timelines during our initial consultation.'
-  },
-  {
-    question: 'Do you offer ongoing support after launch?',
-    answer:
-    'Yes! All our packages include post-launch support. We offer various maintenance plans to ensure your product continues to perform optimally and stays up-to-date with the latest technologies.'
-  },
-  {
-    question: 'What technologies do you work with?',
-    answer:
-    'We specialize in modern web technologies including React, Node.js, TypeScript, and cloud platforms like AWS. We choose the best technology stack based on your specific project requirements.'
-  },
-  {
-    question: 'How do you handle project communication?',
-    answer:
-    "We believe in transparent communication. You'll have a dedicated project manager, regular check-ins, and access to our project management tools. We typically have weekly status meetings and provide daily updates."
-  },
-  {
-    question: 'What is your pricing structure?',
-    answer:
-    'We offer both fixed-price and time-and-materials pricing models. The choice depends on your project scope and requirements. We provide detailed quotes after understanding your needs during our initial consultation.'
-  }];
 
   return (
     <div className="w-full">

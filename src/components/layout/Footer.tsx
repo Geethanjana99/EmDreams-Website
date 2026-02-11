@@ -1,71 +1,49 @@
 import React from 'react';
 import { GithubIcon, TwitterIcon, LinkedinIcon, MailIcon } from 'lucide-react';
+import { COMPANY_INFO } from '../../constants';
+import logo from '../../assets/Emdreams Logo.png';
+
 export function Footer() {
   const footerLinks = {
     company: [
-    {
-      name: 'About',
-      href: '#'
-    },
-    {
-      name: 'Careers',
-      href: '#'
-    },
-    {
-      name: 'Blog',
-      href: '#'
-    }],
-
+      { name: 'About', href: '' },
+      { name: 'Careers', href: '' },
+      { name: 'Blog', href: '' },
+    ],
     services: [
-    {
-      name: 'Web Development',
-      href: '#'
-    },
-    {
-      name: 'Mobile Apps',
-      href: '#'
-    },
-    {
-      name: 'Cloud Solutions',
-      href: '#'
-    }],
-
+      { name: 'Web Development', href: '' },
+      { name: 'Mobile Apps', href: '' },
+      { name: 'Cloud Solutions', href: '' },
+    ],
     legal: [
-    {
-      name: 'Privacy',
-      href: '#'
-    },
-    {
-      name: 'Terms',
-      href: '#'
-    },
-    {
-      name: 'Security',
-      href: '#'
-    }]
-
+      { name: 'Privacy', href: '' },
+      { name: 'Terms', href: '' },
+      { name: 'Security', href: '' },
+    ],
   };
+  
   const socialLinks = [
-  {
-    name: 'GitHub',
-    icon: GithubIcon,
-    href: '#'
-  },
-  {
-    name: 'Twitter',
-    icon: TwitterIcon,
-    href: '#'
-  },
-  {
-    name: 'LinkedIn',
-    icon: LinkedinIcon,
-    href: '#'
-  },
-  {
-    name: 'Email',
-    icon: MailIcon,
-    href: '#'
-  }];
+    {
+      name: 'GitHub',
+      icon: GithubIcon,
+      href: COMPANY_INFO.social.github,
+    },
+    {
+      name: 'Twitter',
+      icon: TwitterIcon,
+      href: COMPANY_INFO.social.twitter,
+    },
+    {
+      name: 'LinkedIn',
+      icon: LinkedinIcon,
+      href: COMPANY_INFO.social.linkedin,
+    },
+    {
+      name: 'Email',
+      icon: MailIcon,
+      href: COMPANY_INFO.email ? `mailto:${COMPANY_INFO.email}` : '',
+    },
+  ].filter(link => link.href); // Only show links that have URLs
 
   return (
     <footer className="w-full border-t border-border bg-background">
@@ -73,13 +51,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <h3
-              className="text-2xl font-bold text-foreground flex items-center gap-2"
-              style={{
-                color: '#c8c1c1'
-              }}>
-
-              <span className="text-primary">Em</span>Dreams
+            <h3 className="text-2xl font-bold text-[#c8c1c1] flex items-center gap-2">
+              <img src={logo} alt="EmDreams Logo" className="h-8 w-[2.375rem] object-contain" />
+              <span><span className="text-primary">Em</span>Dreams</span>
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Building digital solutions that drive business growth through
@@ -95,12 +69,17 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.company.map((link) =>
               <li key={link.name}>
-                  <a
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors">
-
-                    {link.name}
-                  </a>
+                  {link.href ? (
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {link.name}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-muted-foreground/50 cursor-not-allowed">
+                      {link.name}
+                    </span>
+                  )}
                 </li>
               )}
             </ul>
@@ -113,12 +92,17 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.services.map((link) =>
               <li key={link.name}>
-                  <a
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors">
-
-                    {link.name}
-                  </a>
+                  {link.href ? (
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {link.name}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-muted-foreground/50 cursor-not-allowed">
+                      {link.name}
+                    </span>
+                  )}
                 </li>
               )}
             </ul>
@@ -131,12 +115,17 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.legal.map((link) =>
               <li key={link.name}>
-                  <a
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors">
-
-                    {link.name}
-                  </a>
+                  {link.href ? (
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {link.name}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-muted-foreground/50 cursor-not-allowed">
+                      {link.name}
+                    </span>
+                  )}
                 </li>
               )}
             </ul>
@@ -146,7 +135,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-6">
           <p className="text-sm text-muted-foreground">
-            © 2024 EmDreams. All rights reserved.
+            © {new Date().getFullYear()} {COMPANY_INFO.name}. All rights reserved.
           </p>
 
           {/* Social Links */}
