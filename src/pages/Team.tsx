@@ -12,7 +12,11 @@ export function Team() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   useEffect(() => {
-    setTeamMembers(useTeamMembers());
+    const loadTeamMembers = async () => {
+      const teamData = await useTeamMembers();
+      setTeamMembers(teamData);
+    };
+    loadTeamMembers();
   }, []);
 
   const filteredMembers =

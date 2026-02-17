@@ -12,7 +12,11 @@ export function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    setProjects(useProjects());
+    const loadProjects = async () => {
+      const projectsData = await useProjects();
+      setProjects(projectsData);
+    };
+    loadProjects();
   }, []);
 
   const filteredProjects =

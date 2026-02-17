@@ -15,15 +15,22 @@ export const CompanyInfoManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedInfo = getCompanyInfo();
-    if (savedInfo) {
-      setCompanyInfo(savedInfo);
-    }
+    const loadData = async () => {
+      const savedInfo = await getCompanyInfo();
+      if (savedInfo) {
+        setCompanyInfo(savedInfo);
+      }
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
-    saveCompanyInfo(companyInfo);
-    alert('Company information saved successfully!');
+  const handleSave = async () => {
+    const success = await saveCompanyInfo(companyInfo);
+    if (success) {
+      alert('Company information saved successfully!');
+    } else {
+      alert('Error saving company information. Please try again.');
+    }
   };
 
   return (

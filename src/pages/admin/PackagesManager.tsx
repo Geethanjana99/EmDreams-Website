@@ -28,11 +28,14 @@ export const PackagesManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedPackages = getServicePackages();
-    setPackages(savedPackages || defaultPackages);
+    const loadData = async () => {
+      const data = await getServicePackages();
+      setPackages(data.length > 0 ? data : defaultPackages);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let updatedPackages: ServiceCategoryData[];
     if (editingIndex !== null) {
       updatedPackages = [...packages];
@@ -40,9 +43,13 @@ export const PackagesManager: React.FC = () => {
     } else {
       updatedPackages = [...packages, formData];
     }
-    setPackages(updatedPackages);
-    saveServicePackages(updatedPackages);
-    resetForm();
+    const success = await saveServicePackages(updatedPackages);
+    if (success) {
+      setPackages(updatedPackages);
+      resetForm();
+    } else {
+      alert('Error saving service package. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
@@ -51,11 +58,15 @@ export const PackagesManager: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this service category?')) {
       const updatedPackages = packages.filter((_, i) => i !== index);
-      setPackages(updatedPackages);
-      saveServicePackages(updatedPackages);
+      const success = await saveServicePackages(updatedPackages);
+      if (success) {
+        setPackages(updatedPackages);
+      } else {
+        alert('Error deleting service package. Please try again.');
+      }
     }
   };
 

@@ -11,20 +11,23 @@ export function Services() {
   const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
 
   useEffect(() => {
-    // Merge icons with data
-    const iconMap = {
-      web: CodeIcon,
-      mobile: SmartphoneIcon,
-      cloud: CloudIcon,
+    const loadServices = async () => {
+      // Merge icons with data
+      const iconMap = {
+        web: CodeIcon,
+        mobile: SmartphoneIcon,
+        cloud: CloudIcon,
+      };
+      
+      const serviceCategoriesData = await useServiceCategories();
+      const categoriesWithIcons: ServiceCategory[] = serviceCategoriesData.map(category => ({
+        ...category,
+        icon: iconMap[category.id as keyof typeof iconMap],
+      }));
+      
+      setServiceCategories(categoriesWithIcons);
     };
-    
-    const serviceCategoriesData = useServiceCategories();
-    const categoriesWithIcons: ServiceCategory[] = serviceCategoriesData.map(category => ({
-      ...category,
-      icon: iconMap[category.id as keyof typeof iconMap],
-    }));
-    
-    setServiceCategories(categoriesWithIcons);
+    loadServices();
   }, []);
 
   return (

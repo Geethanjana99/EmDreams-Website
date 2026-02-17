@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import type { Project } from '../../types';
-import { getProjects, saveProjects } from '../../utils/storage';
+import { getProjects, saveProjects, uploadImage } from '../../utils/storage';
 import { projects as defaultProjects } from '../../data/projects';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { Dialog } from '../../components/ui/dialog';
-import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Upload, Image as ImageIcon } from 'lucide-react';
 
 export const ProjectsManager: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<Project>({
     title: '',
     category: 'web',
@@ -27,37 +30,84 @@ export const ProjectsManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedProjects = getProjects();
-    setProjects(savedProjects || defaultProjects);
+    const loadData = async () => {
+      const data = await getProjects();
+      setProjects(data.length > 0 ? data : defaultProjects);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setIsUploading(true);
+    
+    let imageUrl = formData.image;
+    
+    // Upload image if a new file was selected
+    if (imageFile) {
+      const uploadedUrl = await uploadImage(imageFile, 'Projects');
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      } else {
+        alert('Error uploading image. Please try again.');
+        setIsUploading(false);
+        return;
+      }
+    }
+    
+    const updatedProject = { ...formData, image: imageUrl };
+    
     let updatedProjects: Project[];
     if (editingIndex !== null) {
       updatedProjects = [...projects];
-      updatedProjects[editingIndex] = formData;
+      updatedProjects[editingIndex] = updatedProject;
     } else {
-      updatedProjects = [...projects, formData];
+      updatedProjects = [...projects, updatedProject];
     }
-    setProjects(updatedProjects);
-    saveProjects(updatedProjects);
-    resetForm();
+    
+    const success = await saveProjects(updatedProjects);
+    setIsUploading(false);
+    
+    if (success) {
+      setProjects(updatedProjects);
+      resetForm();
+    } else {
+      alert('Error saving project. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
     setFormData(projects[index]);
+    setImagePreview(projects[index].image);
+    setImageFile(null);
     setEditingIndex(index);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this project?')) {
       const updatedProjects = projects.filter((_, i) => i !== index);
-      setProjects(updatedProjects);
-      saveProjects(updatedProjects);
+      const success = await saveProjects(updatedProjects);
+      if (success) {
+        setProjects(updatedProjects);
+      } else {
+        alert('Error deleting project. Please try again.');
+      }
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
   const resetForm = () => {
     setFormData({
       title: '',
@@ -72,6 +122,8 @@ export const ProjectsManager: React.FC = () => {
       },
       contributors: [''],
     });
+    setImageFile(null);
+    setImagePreview('');
     setEditingIndex(null);
     setIsDialogOpen(false);
   };
@@ -229,12 +281,46 @@ export const ProjectsManager: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                  <Input
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Project Image</label>
+                  <div className="space-y-3">
+                    {imagePreview && (
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-32 h-24 rounded-lg object-cover border-2 border-gray-200"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setImageFile(null);
+                            setImagePreview('');
+                            setFormData({ ...formData, image: '' });
+                          }}
+                        >
+                          <X size={16} className="mr-1" />
+                          Remove
+                        </Button>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border-2 border-dashed border-blue-300 hover:bg-blue-100 transition-colors">
+                          <Upload size={18} />
+                          <span className="text-sm font-medium">Choose Image</span>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-xs text-gray-500">JPG, PNG, or GIF (max 5MB)</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -346,12 +432,12 @@ export const ProjectsManager: React.FC = () => {
               </div>
 
               <div className="p-6 border-t border-gray-200 flex justify-end space-x-3 sticky bottom-0 bg-white">
-                <Button variant="outline" onClick={resetForm}>
+                <Button variant="outline" onClick={resetForm} disabled={isUploading}>
                   Cancel
                 </Button>
-                <Button onClick={handleSave} className="flex items-center space-x-2">
+                <Button onClick={handleSave} className="flex items-center space-x-2" disabled={isUploading}>
                   <Save size={18} />
-                  <span>Save Project</span>
+                  <span>{isUploading ? 'Uploading...' : 'Save Project'}</span>
                 </Button>
               </div>
             </div>

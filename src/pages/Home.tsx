@@ -23,30 +23,34 @@ export function Home({ onNavigate }: HomeProps) {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
 
   useEffect(() => {
-    // Get company info
-    const info = useCompanyInfo();
-    setCompanyInfo(info);
-    // Merge icons with service data
-    const iconMap = {
-      'Web Development': CodeIcon,
-      'Mobile Apps': SmartphoneIcon,
-      'Cloud Solutions': CloudIcon,
+    const loadHomeData = async () => {
+      // Get company info
+      const info = await useCompanyInfo();
+      setCompanyInfo(info);
+      
+      // Merge icons with service data
+      const iconMap = {
+        'Web Development': CodeIcon,
+        'Mobile Apps': SmartphoneIcon,
+        'Cloud Solutions': CloudIcon,
+      };
+      
+      const servicesData = await useServices();
+      const servicesWithIcons: Service[] = servicesData.map(service => ({
+        ...service,
+        icon: iconMap[service.title as keyof typeof iconMap],
+      }));
+      setServices(servicesWithIcons);
+      
+      // Get featured team members (5 with CEO in middle)
+      const teamMembers = await useTeamMembers();
+      setFeaturedTeam(teamMembers.slice(0, 5));
+      
+      // Get featured projects (first 2)
+      const projects = await useProjects();
+      setFeaturedProjects(projects.slice(0, 2));
     };
-    
-    const servicesData = useServices();
-    const servicesWithIcons: Service[] = servicesData.map(service => ({
-      ...service,
-      icon: iconMap[service.title as keyof typeof iconMap],
-    }));
-    setServices(servicesWithIcons);
-    
-    // Get featured team members (5 with CEO in middle)
-    const teamMembers = useTeamMembers();
-    setFeaturedTeam(teamMembers.slice(0, 5));
-    
-    // Get featured projects (first 2)
-    const projects = useProjects();
-    setFeaturedProjects(projects.slice(0, 2));
+    loadHomeData();
   }, []);
 
   return (
