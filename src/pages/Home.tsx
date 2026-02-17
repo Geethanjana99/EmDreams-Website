@@ -8,9 +8,9 @@ import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ArrowRightIcon, Layers, Cpu, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
 import { workSteps } from '../data/services';
-import { useServices, useTeamMembers, useProjects } from '../utils/dataHooks';
-import { COMPANY_INFO, AVAILABILITY } from '../constants';
-import type { Service, TeamMember, Project } from '../types';
+import { useServices, useTeamMembers, useProjects, useCompanyInfo } from '../utils/dataHooks';
+import { AVAILABILITY } from '../constants';
+import type { Service, TeamMember, Project, CompanyInfo } from '../types';
 
 type HomeProps = {
   onNavigate: (page: string) => void;
@@ -20,8 +20,12 @@ export function Home({ onNavigate }: HomeProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [featuredTeam, setFeaturedTeam] = useState<TeamMember[]>([]);
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
 
   useEffect(() => {
+    // Get company info
+    const info = useCompanyInfo();
+    setCompanyInfo(info);
     // Merge icons with service data
     const iconMap = {
       'Web Development': CodeIcon,
@@ -67,13 +71,13 @@ export function Home({ onNavigate }: HomeProps) {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
-                <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[0]}.</span>
-                <span className="block text-gradient">{COMPANY_INFO.tagline.split('.')[1]}.</span>
-                <span className="block text-foreground">{COMPANY_INFO.tagline.split('.')[2]}.</span>
+                <span className="block text-foreground">{companyInfo?.tagline.split('.')[0]}.</span>
+                <span className="block text-gradient">{companyInfo?.tagline.split('.')[1]}.</span>
+                <span className="block text-foreground">{companyInfo?.tagline.split('.')[2]}.</span>
               </h1>
 
               <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
-                {COMPANY_INFO.description}
+                {companyInfo?.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -97,19 +101,19 @@ export function Home({ onNavigate }: HomeProps) {
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
                 <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.projectsCompleted}+</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.projectsCompleted}+</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Projects
                   </div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.clientsServed}+</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.clientsServed}+</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Clients
                   </div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{COMPANY_INFO.stats.yearsOfExperience}+</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.yearsOfExperience}+</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Years
                   </div>
