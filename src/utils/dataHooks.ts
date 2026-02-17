@@ -4,7 +4,8 @@ import { teamMembers as defaultTeamMembers } from '../data/team';
 import { servicesData as defaultServices } from '../data/services';
 import { serviceCategories as defaultServiceCategories } from '../data/servicePackages';
 import { faqs as defaultFAQs, contactInfoData as defaultContactInfo } from '../data/contact';
-import { getProjects, getTeamMembers, getServices, getServicePackages, getFAQs, getContactInfo } from './storage';
+import { COMPANY_INFO } from '../constants';
+import { getProjects, getTeamMembers, getServices, getServicePackages, getFAQs, getContactInfo, getCompanyInfo } from './storage';
 
 export const useProjects = () => {
   return getProjects() || defaultProjects;
@@ -28,4 +29,13 @@ export const useFAQs = () => {
 
 export const useContactInfo = () => {
   return getContactInfo() || defaultContactInfo;
+};
+
+export const useCompanyInfo = () => {
+  const defaultCompanyInfo = {
+    tagline: COMPANY_INFO.tagline,
+    description: COMPANY_INFO.description,
+    stats: COMPANY_INFO.stats,
+  };
+  return getCompanyInfo() || defaultCompanyInfo;
 };

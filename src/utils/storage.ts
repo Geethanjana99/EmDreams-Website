@@ -1,6 +1,6 @@
 // LocalStorage utilities for data persistence
 
-import type { Project, TeamMember, FAQ } from '../types';
+import type { Project, TeamMember, FAQ, CompanyInfo } from '../types';
 import type { ServiceCategoryData, ServiceData, ContactInfoData } from '../types/admin';
 
 const STORAGE_KEYS = {
@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
   SERVICE_PACKAGES: 'emdreams_service_packages',
   FAQS: 'emdreams_faqs',
   CONTACT_INFO: 'emdreams_contact_info',
+  COMPANY_INFO: 'emdreams_company_info',
 } as const;
 
 // Projects
@@ -70,6 +71,16 @@ export const getContactInfo = (): ContactInfoData[] | null => {
 
 export const saveContactInfo = (info: ContactInfoData[]): void => {
   localStorage.setItem(STORAGE_KEYS.CONTACT_INFO, JSON.stringify(info));
+};
+
+// Company Info
+export const getCompanyInfo = (): CompanyInfo | null => {
+  const data = localStorage.getItem(STORAGE_KEYS.COMPANY_INFO);
+  return data ? JSON.parse(data) : null;
+};
+
+export const saveCompanyInfo = (info: CompanyInfo): void => {
+  localStorage.setItem(STORAGE_KEYS.COMPANY_INFO, JSON.stringify(info));
 };
 
 // Clear all data (reset to defaults)

@@ -7,6 +7,7 @@ import { ServicesManager } from './ServicesManager';
 import { PackagesManager } from './PackagesManager';
 import { FAQsManager } from './FAQsManager';
 import { ContactInfoManager } from './ContactInfoManager';
+import { CompanyInfoManager } from './CompanyInfoManager';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -15,6 +16,7 @@ import {
   Package, 
   HelpCircle, 
   Mail,
+  Building2,
   LogOut 
 } from 'lucide-react';
 
@@ -22,7 +24,7 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
-type TabType = 'overview' | 'projects' | 'team' | 'services' | 'packages' | 'faqs' | 'contact';
+type TabType = 'overview' | 'projects' | 'team' | 'services' | 'packages' | 'faqs' | 'contact' | 'company';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -34,6 +36,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const tabs = [
     { id: 'overview' as TabType, label: 'Overview', icon: LayoutDashboard },
+    { id: 'company' as TabType, label: 'Company Info', icon: Building2 },
     { id: 'projects' as TabType, label: 'Projects', icon: FolderKanban },
     { id: 'team' as TabType, label: 'Team', icon: Users },
     { id: 'services' as TabType, label: 'Services', icon: Briefcase },
@@ -103,6 +106,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         return <FAQsManager />;
       case 'contact':
         return <ContactInfoManager />;
+      case 'company':
+        return <CompanyInfoManager />;
       default:
         return null;
     }
