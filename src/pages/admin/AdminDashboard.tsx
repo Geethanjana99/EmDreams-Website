@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { logout } from '../../utils/auth';
 import { Button } from '../../components/ui/button';
 import { ProjectsManager } from './ProjectsManager';
@@ -28,6 +28,44 @@ type TabType = 'overview' | 'projects' | 'team' | 'services' | 'packages' | 'faq
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [counts, setCounts] = useState({
+    projects: 0,
+    team: 0,
+    services: 0,
+    packages: 0,
+    faqs: 0,
+    contact: 0,
+  });
+
+  const updateCounts = () => {
+    const getCount = (key: string): number => {
+      try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data).length : 0;
+      } catch {
+        return 0;
+      }
+    };
+
+    setCounts({
+      projects: getCount('emdreams_projects'),
+      team: getCount('emdreams_team'),
+      services: getCount('emdreams_services'),
+      packages: getCount('emdreams_service_packages'),
+      faqs: getCount('emdreams_faqs'),
+      contact: getCount('emdreams_contact_info'),
+    });
+  };
+
+  useEffect(() => {
+    updateCounts();
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'overview') {
+      updateCounts();
+    }
+  }, [activeTab]);
 
   const handleLogout = () => {
     logout();
@@ -57,7 +95,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Total Projects</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_projects') || '[]').length}
+                      {counts.projects}
                     </p>
                   </div>
                   <FolderKanban className="text-blue-500" size={32} />
@@ -68,7 +106,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Team Members</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_team') || '[]').length}
+                      {counts.team}
                     </p>
                   </div>
                   <Users className="text-green-500" size={32} />
@@ -77,12 +115,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Service Categories</p>
+                    <p className="text-sm text-gray-600">Service Packages</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_service_packages') || '[]').length}
+                      {counts.packages}
                     </p>
                   </div>
                   <Package className="text-purple-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Services</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.services}
+                    </p>
+                  </div>
+                  <Briefcase className="text-orange-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">FAQs</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.faqs}
+                    </p>
+                  </div>
+                  <HelpCircle className="text-yellow-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Contact Info Items</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.contact}
+                    </p>
+                  </div>
+                  <Mail className="text-red-500" size={32} />
                 </div>
               </div>
             </div>
