@@ -18,11 +18,14 @@ export const ContactInfoManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedContactInfo = getContactInfo();
-    setContactInfo(savedContactInfo || defaultContactInfo);
+    const loadData = async () => {
+      const data = await getContactInfo();
+      setContactInfo(data.length > 0 ? data : defaultContactInfo);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let updatedContactInfo: ContactInfoData[];
     if (editingIndex !== null) {
       updatedContactInfo = [...contactInfo];
@@ -30,9 +33,13 @@ export const ContactInfoManager: React.FC = () => {
     } else {
       updatedContactInfo = [...contactInfo, formData];
     }
-    setContactInfo(updatedContactInfo);
-    saveContactInfo(updatedContactInfo);
-    resetForm();
+    const success = await saveContactInfo(updatedContactInfo);
+    if (success) {
+      setContactInfo(updatedContactInfo);
+      resetForm();
+    } else {
+      alert('Error saving contact info. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
@@ -41,11 +48,15 @@ export const ContactInfoManager: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this contact info?')) {
       const updatedContactInfo = contactInfo.filter((_, i) => i !== index);
-      setContactInfo(updatedContactInfo);
-      saveContactInfo(updatedContactInfo);
+      const success = await saveContactInfo(updatedContactInfo);
+      if (success) {
+        setContactInfo(updatedContactInfo);
+      } else {
+        alert('Error deleting contact info. Please try again.');
+      }
     }
   };
 

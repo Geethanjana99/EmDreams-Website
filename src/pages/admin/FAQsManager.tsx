@@ -18,11 +18,14 @@ export const FAQsManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedFAQs = getFAQs();
-    setFaqs(savedFAQs || defaultFAQs);
+    const loadData = async () => {
+      const data = await getFAQs();
+      setFaqs(data.length > 0 ? data : defaultFAQs);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let updatedFAQs: FAQ[];
     if (editingIndex !== null) {
       updatedFAQs = [...faqs];
@@ -30,9 +33,13 @@ export const FAQsManager: React.FC = () => {
     } else {
       updatedFAQs = [...faqs, formData];
     }
-    setFaqs(updatedFAQs);
-    saveFAQs(updatedFAQs);
-    resetForm();
+    const success = await saveFAQs(updatedFAQs);
+    if (success) {
+      setFaqs(updatedFAQs);
+      resetForm();
+    } else {
+      alert('Error saving FAQ. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
@@ -41,11 +48,15 @@ export const FAQsManager: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this FAQ?')) {
       const updatedFAQs = faqs.filter((_, i) => i !== index);
-      setFaqs(updatedFAQs);
-      saveFAQs(updatedFAQs);
+      const success = await saveFAQs(updatedFAQs);
+      if (success) {
+        setFaqs(updatedFAQs);
+      } else {
+        alert('Error deleting FAQ. Please try again.');
+      }
     }
   };
 

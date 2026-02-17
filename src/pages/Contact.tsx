@@ -39,21 +39,26 @@ export function Contact() {
   });
 
   useEffect(() => {
-    // Merge icons with data
-    const iconMap = {
-      Email: MailIcon,
-      WhatsApp: MessageSquareIcon,
-      Location: MapPinIcon,
+    const loadContactData = async () => {
+      // Merge icons with data
+      const iconMap = {
+        Email: MailIcon,
+        WhatsApp: MessageSquareIcon,
+        Location: MapPinIcon,
+      };
+      
+      const contactInfoData = await useContactInfo();
+      const contactInfoWithIcons: ContactInfo[] = contactInfoData.map(info => ({
+        ...info,
+        icon: iconMap[info.title as keyof typeof iconMap],
+      }));
+      
+      setContactInfo(contactInfoWithIcons);
+      
+      const faqsData = await useFAQs();
+      setFaqs(faqsData);
     };
-    
-    const contactInfoData = useContactInfo();
-    const contactInfoWithIcons: ContactInfo[] = contactInfoData.map(info => ({
-      ...info,
-      icon: iconMap[info.title as keyof typeof iconMap],
-    }));
-    
-    setContactInfo(contactInfoWithIcons);
-    setFaqs(useFAQs());
+    loadContactData();
   }, []);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -18,11 +18,14 @@ export const ServicesManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedServices = getServices();
-    setServices(savedServices || defaultServices);
+    const loadData = async () => {
+      const data = await getServices();
+      setServices(data.length > 0 ? data : defaultServices);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let updatedServices: ServiceData[];
     if (editingIndex !== null) {
       updatedServices = [...services];
@@ -30,9 +33,13 @@ export const ServicesManager: React.FC = () => {
     } else {
       updatedServices = [...services, formData];
     }
-    setServices(updatedServices);
-    saveServices(updatedServices);
-    resetForm();
+    const success = await saveServices(updatedServices);
+    if (success) {
+      setServices(updatedServices);
+      resetForm();
+    } else {
+      alert('Error saving service. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
@@ -41,11 +48,15 @@ export const ServicesManager: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this service?')) {
       const updatedServices = services.filter((_, i) => i !== index);
-      setServices(updatedServices);
-      saveServices(updatedServices);
+      const success = await saveServices(updatedServices);
+      if (success) {
+        setServices(updatedServices);
+      } else {
+        alert('Error deleting service. Please try again.');
+      }
     }
   };
 

@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import type { TeamMember } from '../../types';
-import { getTeamMembers, saveTeamMembers } from '../../utils/storage';
+import { getTeamMembers, saveTeamMembers, uploadImage } from '../../utils/storage';
 import { teamMembers as defaultTeamMembers } from '../../data/team';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { Dialog } from '../../components/ui/dialog';
-import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Upload, Image as ImageIcon } from 'lucide-react';
 
 export const TeamManager: React.FC = () => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<TeamMember>({
     name: '',
     role: '',
@@ -27,37 +30,84 @@ export const TeamManager: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedMembers = getTeamMembers();
-    setTeamMembers(savedMembers || defaultTeamMembers);
+    const loadData = async () => {
+      const data = await getTeamMembers();
+      setTeamMembers(data.length > 0 ? data : defaultTeamMembers);
+    };
+    loadData();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setIsUploading(true);
+    
+    let imageUrl = formData.image;
+    
+    // Upload image if a new file was selected
+    if (imageFile) {
+      const uploadedUrl = await uploadImage(imageFile, 'team');
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      } else {
+        alert('Error uploading image. Please try again.');
+        setIsUploading(false);
+        return;
+      }
+    }
+    
+    const updatedMember = { ...formData, image: imageUrl };
+    
     let updatedMembers: TeamMember[];
     if (editingIndex !== null) {
       updatedMembers = [...teamMembers];
-      updatedMembers[editingIndex] = formData;
+      updatedMembers[editingIndex] = updatedMember;
     } else {
-      updatedMembers = [...teamMembers, formData];
+      updatedMembers = [...teamMembers, updatedMember];
     }
-    setTeamMembers(updatedMembers);
-    saveTeamMembers(updatedMembers);
-    resetForm();
+    
+    const success = await saveTeamMembers(updatedMembers);
+    setIsUploading(false);
+    
+    if (success) {
+      setTeamMembers(updatedMembers);
+      resetForm();
+    } else {
+      alert('Error saving team member. Please try again.');
+    }
   };
 
   const handleEdit = (index: number) => {
     setFormData(teamMembers[index]);
+    setImagePreview(teamMembers[index].image);
+    setImageFile(null);
     setEditingIndex(index);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = async (index: number) => {
     if (confirm('Are you sure you want to delete this team member?')) {
       const updatedMembers = teamMembers.filter((_, i) => i !== index);
-      setTeamMembers(updatedMembers);
-      saveTeamMembers(updatedMembers);
+      const success = await saveTeamMembers(updatedMembers);
+      if (success) {
+        setTeamMembers(updatedMembers);
+      } else {
+        alert('Error deleting team member. Please try again.');
+      }
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
   const resetForm = () => {
     setFormData({
       name: '',
@@ -72,6 +122,8 @@ export const TeamManager: React.FC = () => {
         twitter: '',
       },
     });
+    setImageFile(null);
+    setImagePreview('');
     setEditingIndex(null);
     setIsDialogOpen(false);
   };
@@ -190,12 +242,46 @@ export const TeamManager: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                  <Input
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://example.com/photo.jpg"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+                  <div className="space-y-3">
+                    {imagePreview && (
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setImageFile(null);
+                            setImagePreview('');
+                            setFormData({ ...formData, image: '' });
+                          }}
+                        >
+                          <X size={16} className="mr-1" />
+                          Remove
+                        </Button>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border-2 border-dashed border-blue-300 hover:bg-blue-100 transition-colors">
+                          <Upload size={18} />
+                          <span className="text-sm font-medium">Choose Image</span>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-xs text-gray-500">JPG, PNG, or GIF (max 5MB)</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -275,12 +361,12 @@ export const TeamManager: React.FC = () => {
               </div>
 
               <div className="p-6 border-t border-gray-200 flex justify-end space-x-3 sticky bottom-0 bg-white">
-                <Button variant="outline" onClick={resetForm}>
+                <Button variant="outline" onClick={resetForm} disabled={isUploading}>
                   Cancel
                 </Button>
-                <Button onClick={handleSave} className="flex items-center space-x-2">
+                <Button onClick={handleSave} className="flex items-center space-x-2" disabled={isUploading}>
                   <Save size={18} />
-                  <span>Save Member</span>
+                  <span>{isUploading ? 'Uploading...' : 'Save Member'}</span>
                 </Button>
               </div>
             </div>
