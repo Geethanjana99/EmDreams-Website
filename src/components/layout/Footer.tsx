@@ -3,7 +3,11 @@ import { GithubIcon, TwitterIcon, LinkedinIcon, MailIcon } from 'lucide-react';
 import { COMPANY_INFO } from '../../constants';
 import logo from '../../assets/Emdreams Logo.png';
 
-export function Footer() {
+interface FooterProps {
+  onNavigate?: (page: string) => void;
+}
+
+export function Footer({ onNavigate }: FooterProps) {
   const footerLinks = {
     company: [
       { name: 'About', href: '' },
@@ -134,9 +138,20 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} {COMPANY_INFO.name}. All rights reserved.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} {COMPANY_INFO.name}. All rights reserved.
+            </p>
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('admin')}
+                className="text-xs text-muted-foreground/30 hover:text-primary/50 transition-colors"
+                aria-label="Admin"
+              >
+                •
+              </button>
+            )}
+          </div>
 
           {/* Social Links */}
           <div className="flex items-center space-x-6">

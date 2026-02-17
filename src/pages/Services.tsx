@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { PackageCard } from '../components/PackageCard';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import { Badge } from '../components/ui/badge';
 import { CheckIcon, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
-import { serviceCategories as serviceCategoriesData } from '../data/servicePackages';
+import { useServiceCategories } from '../utils/dataHooks';
 import type { ServiceCategory } from '../types';
 
 export function Services() {
-  // Merge icons with data
-  const iconMap = {
-    web: CodeIcon,
-    mobile: SmartphoneIcon,
-    cloud: CloudIcon,
-  };
-  
-  const serviceCategories: ServiceCategory[] = serviceCategoriesData.map(category => ({
-    ...category,
-    icon: iconMap[category.id as keyof typeof iconMap],
-  }));
+  const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
+
+  useEffect(() => {
+    // Merge icons with data
+    const iconMap = {
+      web: CodeIcon,
+      mobile: SmartphoneIcon,
+      cloud: CloudIcon,
+    };
+    
+    const serviceCategoriesData = useServiceCategories();
+    const categoriesWithIcons: ServiceCategory[] = serviceCategoriesData.map(category => ({
+      ...category,
+      icon: iconMap[category.id as keyof typeof iconMap],
+    }));
+    
+    setServiceCategories(categoriesWithIcons);
+  }, []);
 
   return (
     <div className="w-full">

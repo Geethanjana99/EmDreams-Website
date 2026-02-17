@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { projects } from '../data/projects';
+import { useProjects } from '../utils/dataHooks';
 import { PROJECT_CATEGORIES } from '../constants';
+import type { Project } from '../types';
 
 export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    setProjects(useProjects());
+  }, []);
 
   const filteredProjects =
     activeFilter === 'all'
