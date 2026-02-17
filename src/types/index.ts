@@ -45,6 +45,7 @@ export interface Project {
   description: string;
   image: string;
   details: ProjectDetails;
+  contributors?: string[];
 }
 
 export interface PackageFeature {
@@ -74,6 +75,16 @@ export interface ContactInfo {
 export interface FAQ {
   question: string;
   answer: string;
+}
+
+export interface CompanyInfo {
+  tagline: string;
+  description: string;
+  stats: {
+    projectsCompleted: number;
+    clientsServed: number;
+    yearsOfExperience: number;
+  };
 }
 
 export interface Category {

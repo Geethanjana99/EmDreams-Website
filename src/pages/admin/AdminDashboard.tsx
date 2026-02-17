@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { logout } from '../../utils/auth';
 import { Button } from '../../components/ui/button';
 import { ProjectsManager } from './ProjectsManager';
@@ -7,6 +7,7 @@ import { ServicesManager } from './ServicesManager';
 import { PackagesManager } from './PackagesManager';
 import { FAQsManager } from './FAQsManager';
 import { ContactInfoManager } from './ContactInfoManager';
+import { CompanyInfoManager } from './CompanyInfoManager';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -15,6 +16,7 @@ import {
   Package, 
   HelpCircle, 
   Mail,
+  Building2,
   LogOut 
 } from 'lucide-react';
 
@@ -22,10 +24,48 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
-type TabType = 'overview' | 'projects' | 'team' | 'services' | 'packages' | 'faqs' | 'contact';
+type TabType = 'overview' | 'projects' | 'team' | 'services' | 'packages' | 'faqs' | 'contact' | 'company';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [counts, setCounts] = useState({
+    projects: 0,
+    team: 0,
+    services: 0,
+    packages: 0,
+    faqs: 0,
+    contact: 0,
+  });
+
+  const updateCounts = () => {
+    const getCount = (key: string): number => {
+      try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data).length : 0;
+      } catch {
+        return 0;
+      }
+    };
+
+    setCounts({
+      projects: getCount('emdreams_projects'),
+      team: getCount('emdreams_team'),
+      services: getCount('emdreams_services'),
+      packages: getCount('emdreams_service_packages'),
+      faqs: getCount('emdreams_faqs'),
+      contact: getCount('emdreams_contact_info'),
+    });
+  };
+
+  useEffect(() => {
+    updateCounts();
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'overview') {
+      updateCounts();
+    }
+  }, [activeTab]);
 
   const handleLogout = () => {
     logout();
@@ -34,6 +74,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const tabs = [
     { id: 'overview' as TabType, label: 'Overview', icon: LayoutDashboard },
+    { id: 'company' as TabType, label: 'Company Info', icon: Building2 },
     { id: 'projects' as TabType, label: 'Projects', icon: FolderKanban },
     { id: 'team' as TabType, label: 'Team', icon: Users },
     { id: 'services' as TabType, label: 'Services', icon: Briefcase },
@@ -54,7 +95,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Total Projects</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_projects') || '[]').length}
+                      {counts.projects}
                     </p>
                   </div>
                   <FolderKanban className="text-blue-500" size={32} />
@@ -65,7 +106,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Team Members</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_team') || '[]').length}
+                      {counts.team}
                     </p>
                   </div>
                   <Users className="text-green-500" size={32} />
@@ -74,12 +115,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Service Categories</p>
+                    <p className="text-sm text-gray-600">Service Packages</p>
                     <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {JSON.parse(localStorage.getItem('emdreams_service_packages') || '[]').length}
+                      {counts.packages}
                     </p>
                   </div>
                   <Package className="text-purple-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Services</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.services}
+                    </p>
+                  </div>
+                  <Briefcase className="text-orange-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">FAQs</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.faqs}
+                    </p>
+                  </div>
+                  <HelpCircle className="text-yellow-500" size={32} />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Contact Info Items</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                      {counts.contact}
+                    </p>
+                  </div>
+                  <Mail className="text-red-500" size={32} />
                 </div>
               </div>
             </div>
@@ -103,6 +177,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         return <FAQsManager />;
       case 'contact':
         return <ContactInfoManager />;
+      case 'company':
+        return <CompanyInfoManager />;
       default:
         return null;
     }

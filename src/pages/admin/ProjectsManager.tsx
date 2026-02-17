@@ -23,6 +23,7 @@ export const ProjectsManager: React.FC = () => {
       results: [''],
       technologies: [''],
     },
+    contributors: [''],
   });
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export const ProjectsManager: React.FC = () => {
         results: [''],
         technologies: [''],
       },
+      contributors: [''],
     });
     setEditingIndex(null);
     setIsDialogOpen(false);
@@ -84,6 +86,13 @@ export const ProjectsManager: React.FC = () => {
     });
   };
 
+  const addContributor = () => {
+    setFormData({
+      ...formData,
+      contributors: [...(formData.contributors || []), ''],
+    });
+  };
+
   const updateArrayItem = (field: 'results' | 'technologies', index: number, value: string) => {
     const newArray = [...formData.details[field]];
     newArray[index] = value;
@@ -96,6 +105,15 @@ export const ProjectsManager: React.FC = () => {
     });
   };
 
+  const updateContributor = (index: number, value: string) => {
+    const newArray = [...(formData.contributors || [])];
+    newArray[index] = value;
+    setFormData({
+      ...formData,
+      contributors: newArray,
+    });
+  };
+
   const removeArrayItem = (field: 'results' | 'technologies', index: number) => {
     setFormData({
       ...formData,
@@ -103,6 +121,13 @@ export const ProjectsManager: React.FC = () => {
         ...formData.details,
         [field]: formData.details[field].filter((_, i) => i !== index),
       },
+    });
+  };
+
+  const removeContributor = (index: number) => {
+    setFormData({
+      ...formData,
+      contributors: (formData.contributors || []).filter((_, i) => i !== index),
     });
   };
 
@@ -123,18 +148,23 @@ export const ProjectsManager: React.FC = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="text-xl font-semibold text-gray-900">{project.title}</h3>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full uppercase">
                     {project.category}
                   </span>
                 </div>
                 <p className="text-gray-600 mb-3">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-2">
                   {project.details.technologies.map((tech, i) => (
                     <span key={i} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                       {tech}
                     </span>
                   ))}
                 </div>
+                {project.contributors && project.contributors.length > 0 && project.contributors[0] && (
+                  <div className="text-sm text-gray-500">
+                    <strong>Contributors:</strong> {project.contributors.filter(c => c).join(', ')}
+                  </div>
+                )}
               </div>
               <div className="flex space-x-2 ml-4">
                 <Button variant="outline" size="sm" onClick={() => handleEdit(index)}>
@@ -279,6 +309,33 @@ export const ProjectsManager: React.FC = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => removeArrayItem('technologies', index)}
+                        >
+                          <X size={14} />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="block text-sm font-medium text-gray-700">Contributors</label>
+                    <Button size="sm" onClick={addContributor}>
+                      <Plus size={14} />
+                    </Button>
+                  </div>
+                  {(formData.contributors || ['']).map((contributor, index) => (
+                    <div key={index} className="flex gap-2 mb-2">
+                      <Input
+                        value={contributor}
+                        onChange={(e) => updateContributor(index, e.target.value)}
+                        placeholder="Contributor name"
+                      />
+                      {(formData.contributors || []).length > 1 && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeContributor(index)}
                         >
                           <X size={14} />
                         </Button>

@@ -44,7 +44,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
 
           <div className="absolute top-4 left-4 z-20">
-            <Badge className="bg-black/50 backdrop-blur-md border-white/10 text-white hover:bg-primary hover:text-black transition-colors">
+            <Badge className="bg-black/50 backdrop-blur-md border-white/10 text-white hover:bg-primary hover:text-black transition-colors uppercase">
               {project.category}
             </Badge>
           </div>
@@ -84,7 +84,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </DialogTitle>
               <Badge
                 variant="outline"
-                className="border-primary/50 text-primary">
+                className="border-primary/50 text-primary uppercase">
 
                 {project.category}
               </Badge>
