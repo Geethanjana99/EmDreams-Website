@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { TeamMemberCard } from '../components/TeamMemberCard';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { teamMembers } from '../data/team';
+import { useTeamMembers } from '../utils/dataHooks';
 import { TEAM_DEPARTMENTS } from '../constants';
+import type { TeamMember } from '../types';
 
 export function Team() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+
+  useEffect(() => {
+    setTeamMembers(useTeamMembers());
+  }, []);
 
   const filteredMembers =
     activeFilter === 'all'

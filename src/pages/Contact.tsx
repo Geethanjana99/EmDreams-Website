@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import {
   Card,
@@ -25,27 +25,36 @@ import {
 '../components/ui/accordion';
 import { Badge } from '../components/ui/badge';
 import { SendIcon, MailIcon, MessageSquareIcon, MapPinIcon } from 'lucide-react';
-import { contactInfoData, faqs } from '../data/contact';
-import type { ContactInfo } from '../types';
+import { useContactInfo, useFAQs } from '../utils/dataHooks';
+import type { ContactInfo, FAQ } from '../types';
 
 export function Contact() {
-  // Merge icons with data
-  const iconMap = {
-    Email: MailIcon,
-    WhatsApp: MessageSquareIcon,
-    Location: MapPinIcon,
-  };
-  
-  const contactInfo: ContactInfo[] = contactInfoData.map(info => ({
-    ...info,
-    icon: iconMap[info.title as keyof typeof iconMap],
-  }));
+  const [contactInfo, setContactInfo] = useState<ContactInfo[]>([]);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     service: '',
     message: ''
   });
+
+  useEffect(() => {
+    // Merge icons with data
+    const iconMap = {
+      Email: MailIcon,
+      WhatsApp: MessageSquareIcon,
+      Location: MapPinIcon,
+    };
+    
+    const contactInfoData = useContactInfo();
+    const contactInfoWithIcons: ContactInfo[] = contactInfoData.map(info => ({
+      ...info,
+      icon: iconMap[info.title as keyof typeof iconMap],
+    }));
+    
+    setContactInfo(contactInfoWithIcons);
+    setFaqs(useFAQs());
+  }, []);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);

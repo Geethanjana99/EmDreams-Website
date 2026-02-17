@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { ServiceCard } from '../components/ServiceCard';
 import { TeamMemberCard } from '../components/TeamMemberCard';
@@ -7,34 +7,43 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ArrowRightIcon, Layers, Cpu, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
-import { servicesData, workSteps } from '../data/services';
-import { teamMembers } from '../data/team';
-import { projects } from '../data/projects';
+import { workSteps } from '../data/services';
+import { useServices, useTeamMembers, useProjects } from '../utils/dataHooks';
 import { COMPANY_INFO, AVAILABILITY } from '../constants';
-import type { Service } from '../types';
+import type { Service, TeamMember, Project } from '../types';
 
 type HomeProps = {
   onNavigate: (page: string) => void;
 };
 
 export function Home({ onNavigate }: HomeProps) {
-  // Merge icons with service data
-  const iconMap = {
-    'Web Development': CodeIcon,
-    'Mobile Apps': SmartphoneIcon,
-    'Cloud Solutions': CloudIcon,
-  };
-  
-  const services: Service[] = servicesData.map(service => ({
-    ...service,
-    icon: iconMap[service.title as keyof typeof iconMap],
-  }));
-  
-  // Get featured team members (5 with CEO in middle)
-  const featuredTeam = teamMembers.slice(0, 5);
-  
-  // Get featured projects (first 2)
-  const featuredProjects = projects.slice(0, 2);
+  const [services, setServices] = useState<Service[]>([]);
+  const [featuredTeam, setFeaturedTeam] = useState<TeamMember[]>([]);
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    // Merge icons with service data
+    const iconMap = {
+      'Web Development': CodeIcon,
+      'Mobile Apps': SmartphoneIcon,
+      'Cloud Solutions': CloudIcon,
+    };
+    
+    const servicesData = useServices();
+    const servicesWithIcons: Service[] = servicesData.map(service => ({
+      ...service,
+      icon: iconMap[service.title as keyof typeof iconMap],
+    }));
+    setServices(servicesWithIcons);
+    
+    // Get featured team members (5 with CEO in middle)
+    const teamMembers = useTeamMembers();
+    setFeaturedTeam(teamMembers.slice(0, 5));
+    
+    // Get featured projects (first 2)
+    const projects = useProjects();
+    setFeaturedProjects(projects.slice(0, 2));
+  }, []);
 
   return (
     <div className="w-full overflow-hidden">
@@ -316,13 +325,13 @@ export function Home({ onNavigate }: HomeProps) {
         <div className="md:hidden mb-16 -mx-4 px-4">
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4">
             {(() => {
-              // Reorder to show CEO (index 2) first
+              // Reorder to show CEO (index 2) first if available
               const middleIndex = 2;
               const reorderedTeam = [
                 featuredTeam[middleIndex], // CEO first
                 ...featuredTeam.slice(0, middleIndex), // Members before CEO
                 ...featuredTeam.slice(middleIndex + 1), // Members after CEO
-              ];
+              ].filter(Boolean); // Remove undefined values
               
               return reorderedTeam.map((member, index) => (
                 <div
