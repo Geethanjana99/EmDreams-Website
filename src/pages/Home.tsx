@@ -42,9 +42,15 @@ export function Home({ onNavigate }: HomeProps) {
       }));
       setServices(servicesWithIcons);
       
-      // Get featured team members (5 with CEO in middle)
+      // Get featured team members (ensure Founder is included and centered)
       const teamMembers = await useTeamMembers();
-      setFeaturedTeam(teamMembers.slice(0, 5));
+      let featured = teamMembers.slice(0, 5);
+      const founder = teamMembers.find((m) => /founder/i.test(m.role));
+      if (founder && !featured.some((m) => m.name === founder.name)) {
+        // place founder first and trim to 5
+        featured = [founder, ...featured.filter((m) => m.name !== founder.name)].slice(0, 5);
+      }
+      setFeaturedTeam(featured);
       
       // Get featured projects (first 2)
       const projects = await useProjects();
@@ -297,50 +303,52 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
         {/* Desktop View - All members visible */}
         <div className="hidden md:flex relative justify-center items-center gap-4 mb-16 overflow-hidden px-4">
-          {featuredTeam.map((member, index) => {
-            const middleIndex = 2; // CEO in the middle of 5 members
-            const isCEO = index === middleIndex;
-            
-            // Calculate distance from center (0, 1, or 2)
-            const distance = Math.abs(index - middleIndex);
-            
-            // Scale reduces by 10% for each step away from center
-            const scaleValue = 100 - (distance * 10);
-            
-            // Inline style for dynamic scale
-            const scale = scaleValue / 100;
-            
-            return (
-              <div
-                key={member.name}
-                className={`transition-all duration-700 ease-out hover:scale-105 hover:z-30 ${
-                  isCEO ? 'z-20' : 'z-10'
-                }`}
-                style={{
-                  transform: `scale(${scale})`,
-                  opacity: isCEO ? 1 : 0.85 + (distance * -0.1),
-                }}
-              >
-                <div className="w-[240px]">
-                  <TeamMemberCard member={member} />
+          {(() => {
+            // Determine the center index based on Founder role; fallback to index 2
+            const centerIndex = featuredTeam.findIndex((m) => /founder/i.test(m.role));
+            const middleIndex = centerIndex !== -1 ? centerIndex : 2;
+
+            return featuredTeam.map((member, index) => {
+              const isCenter = index === middleIndex;
+
+              // Calculate distance from center (0, 1, or 2)
+              const distance = Math.abs(index - middleIndex);
+
+              // Scale reduces by 10% for each step away from center
+              const scaleValue = 100 - distance * 10;
+              const scale = scaleValue / 100;
+
+              return (
+                <div
+                  key={member.name}
+                  className={`transition-all duration-700 ease-out hover:scale-105 hover:z-30 ${isCenter ? 'z-20' : 'z-10'}`}
+                  style={{
+                    transform: `scale(${scale})`,
+                    opacity: isCenter ? 1 : 0.85 + distance * -0.1,
+                  }}
+                >
+                  <div className="w-[240px]">
+                    <TeamMemberCard member={member} />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            });
+          })()}
         </div>
 
         {/* Mobile View - Horizontal Scroll */}
         <div className="md:hidden mb-16 -mx-4 px-4">
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4">
             {(() => {
-              // Reorder to show CEO (index 2) first if available
-              const middleIndex = 2;
+              // Reorder to show Founder first on mobile if available
+              const founderIndex = featuredTeam.findIndex((m) => /founder/i.test(m.role));
+              const middleIndex = founderIndex !== -1 ? founderIndex : 2;
               const reorderedTeam = [
-                featuredTeam[middleIndex], // CEO first
-                ...featuredTeam.slice(0, middleIndex), // Members before CEO
-                ...featuredTeam.slice(middleIndex + 1), // Members after CEO
-              ].filter(Boolean); // Remove undefined values
-              
+                featuredTeam[middleIndex],
+                ...featuredTeam.slice(0, middleIndex),
+                ...featuredTeam.slice(middleIndex + 1),
+              ].filter(Boolean);
+
               return reorderedTeam.map((member, index) => (
                 <div
                   key={member.name}

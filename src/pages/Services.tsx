@@ -3,7 +3,7 @@ import { SectionContainer } from '../components/layout/SectionContainer';
 import { PackageCard } from '../components/PackageCard';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import { Badge } from '../components/ui/badge';
-import { CheckIcon, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
+import { CheckIcon, CodeIcon, SmartphoneIcon } from 'lucide-react';
 import { useServiceCategories } from '../utils/dataHooks';
 import type { ServiceCategory } from '../types';
 
@@ -14,17 +14,17 @@ export function Services() {
     const loadServices = async () => {
       // Merge icons with data
       const iconMap = {
-        web: CodeIcon,
-        mobile: SmartphoneIcon,
-        cloud: CloudIcon,
-      };
-      
+        'software-development': CodeIcon,
+        'digital-marketing': SmartphoneIcon,
+        'it-project-support': CheckIcon,
+      } as Record<string, any>;
+
       const serviceCategoriesData = await useServiceCategories();
       const categoriesWithIcons: ServiceCategory[] = serviceCategoriesData.map(category => ({
         ...category,
-        icon: iconMap[category.id as keyof typeof iconMap],
+        icon: iconMap[category.id] || CodeIcon,
       }));
-      
+
       setServiceCategories(categoriesWithIcons);
     };
     loadServices();
@@ -44,7 +44,7 @@ export function Services() {
           </p>
         </div>
 
-        <Tabs defaultValue="web" className="w-full">
+        <Tabs defaultValue={serviceCategories[0]?.id ?? 'software-development'} className="w-full">
           <div className="flex justify-center mb-12">
             <TabsList className="grid w-full max-w-2xl grid-cols-3 bg-white/5 border border-white/10 p-1 rounded-xl">
               {serviceCategories.map((category) =>

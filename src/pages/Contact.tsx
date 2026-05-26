@@ -7,16 +7,7 @@ import {
   CardDescription,
   CardContent } from
 '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue } from
-'../components/ui/select';
-import { Button } from '../components/ui/button';
+// icons
 import {
   Accordion,
   AccordionContent,
@@ -24,47 +15,21 @@ import {
   AccordionTrigger } from
 '../components/ui/accordion';
 import { Badge } from '../components/ui/badge';
-import { SendIcon, MailIcon, MessageSquareIcon, MapPinIcon } from 'lucide-react';
-import { useContactInfo, useFAQs } from '../utils/dataHooks';
-import type { ContactInfo, FAQ } from '../types';
+import { SendIcon, MailIcon, MessageSquareIcon, PhoneCall, Facebook } from 'lucide-react';
+import { useFAQs } from '../utils/dataHooks';
+import type { FAQ } from '../types';
 
 export function Contact() {
-  const [contactInfo, setContactInfo] = useState<ContactInfo[]>([]);
   const [faqs, setFaqs] = useState<FAQ[]>([]);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    service: '',
-    message: ''
-  });
 
   useEffect(() => {
     const loadContactData = async () => {
-      // Merge icons with data
-      const iconMap = {
-        Email: MailIcon,
-        WhatsApp: MessageSquareIcon,
-        Location: MapPinIcon,
-      };
-      
-      const contactInfoData = await useContactInfo();
-      const contactInfoWithIcons: ContactInfo[] = contactInfoData.map(info => ({
-        ...info,
-        icon: iconMap[info.title as keyof typeof iconMap],
-      }));
-      
-      setContactInfo(contactInfoWithIcons);
-      
       const faqsData = await useFAQs();
       setFaqs(faqsData);
     };
     loadContactData();
   }, []);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission
-  };
+  // No form on this page; users can contact via phone, email or WhatsApp below.
 
   return (
     <div className="w-full">
@@ -75,180 +40,66 @@ export function Contact() {
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold mb-6">Get in Touch</h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Ready to start your project? We'd love to hear from you. Fill out
-            the form below or reach out directly.
+            Ready to start your project? We'd love to hear from you. Reach out using any option below.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-20">
-          {/* Contact Form */}
-          <Card className="bg-white/5 border-white/10 shadow-2xl">
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl font-bold">
-                Send us a message
-              </CardTitle>
-              <CardDescription>
-                Fill out the form and we'll get back to you within 24 hours
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="name"
-                    className="text-sm font-medium text-foreground/80">
-
-                    Name
-                  </label>
-                  <Input
-                    id="name"
-                    placeholder="Your name"
-                    value={formData.name}
-                    onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      name: e.target.value
-                    })
-                    }
-                    required
-                    className="bg-black/20 border-white/10 focus-visible:ring-primary" />
-
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {/* Email Card */}
+          <Card className="group bg-white/5 border-white/10 hover:border-primary/50 transition-all duration-300">
+            <CardContent className="pt-8 pb-6 px-6 text-center flex flex-col items-center justify-center">
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <MailIcon className="h-7 w-7 text-primary" />
                 </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="email"
-                    className="text-sm font-medium text-foreground/80">
-
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      email: e.target.value
-                    })
-                    }
-                    required
-                    className="bg-black/20 border-white/10 focus-visible:ring-primary" />
-
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="service"
-                    className="text-sm font-medium text-foreground/80">
-
-                    Service Interested In
-                  </label>
-                  <Select
-                    value={formData.service}
-                    onValueChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      service: value
-                    })
-                    }>
-
-                    <SelectTrigger
-                      id="service"
-                      className="bg-black/20 border-white/10 focus:ring-primary">
-
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-card border-white/10">
-                      <SelectItem value="web">Web Development</SelectItem>
-                      <SelectItem value="mobile">Mobile Apps</SelectItem>
-                      <SelectItem value="cloud">Cloud Solutions</SelectItem>
-                      <SelectItem value="consulting">Consulting</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="message"
-                    className="text-sm font-medium text-foreground/80">
-
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell us about your project..."
-                    rows={5}
-                    value={formData.message}
-                    onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      message: e.target.value
-                    })
-                    }
-                    required
-                    className="bg-black/20 border-white/10 focus-visible:ring-primary resize-none" />
-
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-primary text-black hover:bg-primary/90 font-bold h-12"
-                  size="lg">
-
-                  <SendIcon className="w-4 h-4 mr-2" /> Send Message
-                </Button>
-              </form>
+              </div>
+              <h3 className="font-bold text-xl mb-2">Email Us</h3>
+              <p className="text-muted-foreground mb-4">Reach out via email for inquiries and proposals.</p>
+              <a href="mailto:helloemdreams@gmail.com" className="text-primary font-medium">helloemdreams@gmail.com →</a>
             </CardContent>
           </Card>
 
-          {/* Contact Info Cards */}
-          <div className="space-y-6">
-            {contactInfo.map((info) => {
-              const Icon = info.icon;
-              return (
-                <Card
-                  key={info.title}
-                  className="group bg-white/5 border-white/10 hover:border-primary/50 transition-all duration-300">
-
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-6">
-                      <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 border border-primary/20 group-hover:bg-primary/20 transition-colors">
-                        <Icon className="h-7 w-7 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-xl mb-1 group-hover:text-primary transition-colors">
-                          {info.title}
-                        </h3>
-                        <p className="text-muted-foreground mb-3">
-                          {info.description}
-                        </p>
-                        <Button
-                          variant="link"
-                          className="p-0 h-auto text-primary hover:text-primary/80">
-
-                          {info.action} →
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>);
-
-            })}
-
-            <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/10">
-              <h3 className="text-2xl font-bold mb-4">Visit Our Office</h3>
-              <p className="text-muted-foreground mb-6">
-                We're located in the heart of the tech district. Come say hello!
-              </p>
-              <div className="aspect-video w-full rounded-xl bg-black/40 border border-white/10 flex items-center justify-center">
-                <span className="text-muted-foreground flex items-center gap-2">
-                  <MapPinIcon className="w-5 h-5" /> Map Placeholder
-                </span>
+          {/* Call Card */}
+          <Card className="group bg-white/5 border-white/10 hover:border-primary/50 transition-all duration-300">
+            <CardContent className="pt-8 pb-6 px-6 text-center flex flex-col items-center justify-center">
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <PhoneCall className="h-7 w-7 text-primary" />
+                </div>
               </div>
-            </div>
-          </div>
+              <h3 className="font-bold text-xl mb-2">Call Us</h3>
+              <p className="text-muted-foreground mb-4">Prefer to speak? Give us a call.</p>
+              <a href="tel:+94773251345" className="text-primary font-medium">+94 77 325 1345 →</a>
+            </CardContent>
+          </Card>
+
+          {/* WhatsApp Card */}
+          <Card className="group bg-white/5 border-white/10 hover:border-primary/50 transition-all duration-300">
+            <CardContent className="pt-8 pb-6 px-6 text-center flex flex-col items-center justify-center">
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <MessageSquareIcon className="h-7 w-7 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-bold text-xl mb-2">WhatsApp</h3>
+              <p className="text-muted-foreground mb-4">Send a quick message on WhatsApp.</p>
+              <a href="https://wa.me/94773251345" target="_blank" rel="noreferrer" className="text-primary font-medium">+94 77 325 1345 →</a>
+            </CardContent>
+          </Card>
+
+          {/* Facebook Card */}
+          <Card className="group bg-white/5 border-white/10 hover:border-primary/50 transition-all duration-300">
+            <CardContent className="pt-8 pb-6 px-6 text-center flex flex-col items-center justify-center">
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Facebook className="h-7 w-7 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-bold text-xl mb-2">Facebook</h3>
+              <p className="text-muted-foreground mb-4">Follow us on Facebook for updates and news.</p>
+              <a href="https://facebook.com/EmDreams" target="_blank" rel="noreferrer" className="text-primary font-medium">EmDreams →</a>
+            </CardContent>
+          </Card>
         </div>
 
         {/* FAQ Section */}
