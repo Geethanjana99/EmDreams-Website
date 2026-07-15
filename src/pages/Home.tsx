@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SectionContainer } from '../components/layout/SectionContainer';
 import { ServiceCard } from '../components/ServiceCard';
 import { TeamMemberCard } from '../components/TeamMemberCard';
@@ -6,28 +6,160 @@ import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { ArrowRightIcon, Layers, Cpu, CodeIcon, SmartphoneIcon, CloudIcon } from 'lucide-react';
+import { ArrowRightIcon, CloudIcon, CodeIcon, SmartphoneIcon } from 'lucide-react';
 import { workSteps } from '../data/services';
-import { useServices, useTeamMembers, useProjects, useCompanyInfo } from '../utils/dataHooks';
-import { AVAILABILITY } from '../constants';
-import type { Service, TeamMember, Project, CompanyInfo } from '../types';
+import { useServices, useTeamMembers, useProjects } from '../utils/dataHooks';
+import type { Service, TeamMember, Project } from '../types';
 
 type HomeProps = {
   onNavigate: (page: string) => void;
 };
 
+function HeroSplineRobot() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    let isDisposed = false;
+    let splineApp: { dispose?: () => void } | undefined;
+
+    const loadRobot = async () => {
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        return;
+      }
+
+      const { Application } = await import('@splinetool/runtime');
+      if (isDisposed) {
+        return;
+      }
+
+      const app = new Application(canvas);
+      splineApp = app as { dispose?: () => void };
+      await app.load('https://prod.spline.design/if5F77Fxtomf2zQR/scene.splinecode');
+    };
+
+    loadRobot().catch((error) => {
+      console.error('Unable to load Spline robot scene', error);
+    });
+
+    return () => {
+      isDisposed = true;
+      splineApp?.dispose?.();
+    };
+  }, []);
+
+  return (
+    <div className="pointer-events-auto absolute inset-0 z-20 hidden lg:block">
+      <div className="absolute inset-0 overflow-visible">
+        <canvas
+          ref={canvasRef}
+          className="block h-full w-full"
+          aria-label="Interactive 3D robot"
+        />
+      </div>
+    </div>
+  );
+}
+
+function BuildMarketDeliver() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const wordRefs = useRef<HTMLSpanElement[]>([]);
+  const words = ['Build', 'Market', 'Deliver'];
+
+  useEffect(() => {
+    let isCancelled = false;
+    let context: { revert: () => void } | undefined;
+
+    const animateWords = async () => {
+      const { gsap } = await import('gsap');
+      if (isCancelled || !containerRef.current) {
+        return;
+      }
+
+      context = gsap.context(() => {
+        const letters = wordRefs.current.filter(Boolean);
+
+        gsap.set(letters, {
+          autoAlpha: 0,
+          y: 72,
+          rotateX: -70,
+          transformOrigin: '50% 100%',
+        });
+
+        gsap.timeline({ defaults: { ease: 'power4.out' } })
+          .to(letters, {
+            autoAlpha: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1.15,
+            stagger: 0.16,
+          })
+          .to('.hero-word-line', {
+            scaleX: 1,
+            duration: 0.9,
+            stagger: 0.12,
+          }, '-=0.75');
+
+        gsap.to('.hero-word-glow', {
+          xPercent: 115,
+          duration: 3.8,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+        });
+      }, containerRef);
+    };
+
+    animateWords().catch((error) => {
+      console.error('Unable to load GSAP hero animation', error);
+    });
+
+    return () => {
+      isCancelled = true;
+      context?.revert();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-4 pt-20 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl">
+        <div className="ml-auto w-full max-w-5xl space-y-1 text-right lg:pr-8">
+        {words.map((word, index) => (
+          <div key={word} className="overflow-hidden">
+            <span
+              ref={(element) => {
+                if (element) {
+                  wordRefs.current[index] = element;
+                }
+              }}
+              className={`relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal ${
+                index === 1 ? 'text-primary/30' : 'text-white/10'
+              }`}
+              style={{
+                WebkitTextStroke: index === 1 ? '1px rgb(249 115 22 / 0.45)' : '1px rgb(255 255 255 / 0.16)',
+              }}
+            >
+              {word}
+              {index === 1 && (
+                <span className="hero-word-glow pointer-events-none absolute inset-y-4 left-[-70%] w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              )}
+            </span>
+            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+          </div>
+        ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Home({ onNavigate }: HomeProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [featuredTeam, setFeaturedTeam] = useState<TeamMember[]>([]);
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
-  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
 
   useEffect(() => {
     const loadHomeData = async () => {
-      // Get company info
-      const info = await useCompanyInfo();
-      setCompanyInfo(info);
-      
       // Merge icons with service data
       const iconMap = {
         'Web Development': CodeIcon,
@@ -61,163 +193,11 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="w-full overflow-hidden">
-      {/* MODERN CREATIVE HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-16 pb-8 overflow-hidden bg-background">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background z-10" />
-        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-600/10 rounded-full blur-[100px]" />
-
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Hero Text Content */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-medium text-primary tracking-wider uppercase">
-                  {AVAILABILITY.message}
-                </span>
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
-                <span className="block text-foreground">{companyInfo?.tagline.split('.')[0]}.</span>
-                <span className="block text-gradient">{companyInfo?.tagline.split('.')[1]}.</span>
-                <span className="block text-foreground">{companyInfo?.tagline.split('.')[2]}.</span>
-              </h1>
-
-              <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed border-l-2 border-primary/50 pl-6">
-                {companyInfo?.description}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Button
-                  size="lg"
-                  onClick={() => onNavigate('contact')}
-                  className="bg-primary hover:bg-primary/90 text-black font-bold text-base px-6 h-12 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] transition-all duration-300">
-
-                  Start Your Project
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => onNavigate('portfolio')}
-                  className="border-white/20 hover:border-primary hover:text-primary h-12 px-6 text-base bg-transparent backdrop-blur-sm">
-
-                  View Our Work
-                </Button>
-              </div>
-
-              {/* Stats Row */}
-              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.projectsCompleted}+</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    Projects
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.clientsServed}+</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    Clients
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{companyInfo?.stats.yearsOfExperience}+</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    Years
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Creative Visual - Bento Grid Mockup */}
-            <div className="relative hidden lg:block">
-              <div className="relative w-full aspect-square max-w-[500px] mx-auto perspective-1000">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-3xl blur-2xl transform rotate-6" />
-
-                <div className="grid grid-cols-2 gap-3 h-full transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700 ease-out">
-                  {/* Card 1: Code Editor */}
-                  <div className="col-span-2 bg-[#1e1e1e] rounded-2xl border border-white/10 p-3 shadow-2xl overflow-hidden">
-                    <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
-                      <div className="ml-auto text-xs text-white/30">
-                        App.tsx
-                      </div>
-                    </div>
-                    <div className="space-y-1.5 font-mono text-[10px]">
-                      <div className="text-purple-400">
-                        import <span className="text-white">React</span> from{' '}
-                        <span className="text-green-400">'react'</span>
-                      </div>
-                      <div className="text-blue-400">
-                        function <span className="text-yellow-400">App</span>(){' '}
-                        {'{'}
-                      </div>
-                      <div className="pl-3 text-white">return (</div>
-                      <div className="pl-6 text-white">
-                        {'<'}div className=
-                        <span className="text-green-400">"hero"</span>
-                        {'>'}
-                      </div>
-                      <div className="pl-9 text-white">
-                        {'<'}h1{'>'}Hello World{'<'}/h1{'>'}
-                      </div>
-                      <div className="pl-6 text-white">
-                        {'<'}/div{'>'}
-                      </div>
-                      <div className="pl-4 text-white">)</div>
-                      <div className="text-white">{'}'}</div>
-                    </div>
-                  </div>
-
-                  {/* Card 2: Analytics */}
-                  <div className="bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 shadow-2xl flex flex-col justify-between group hover:border-primary/50 transition-colors">
-                    <div className="flex justify-between items-start">
-                      <div className="p-2 bg-primary/20 rounded-lg text-primary">
-                        <Layers size={20} />
-                      </div>
-                      <span className="text-xs text-green-400 font-mono">
-                        +24%
-                      </span>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-white">84.5k</div>
-                      <div className="text-xs text-white/50">Total Views</div>
-                    </div>
-                    <div className="h-1 w-full bg-white/10 rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-primary w-[70%]" />
-                    </div>
-                  </div>
-
-                  {/* Card 3: Server Status */}
-                  <div className="bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 shadow-2xl flex flex-col justify-between group hover:border-primary/50 transition-colors">
-                    <div className="flex justify-between items-start">
-                      <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
-                        <Cpu size={20} />
-                      </div>
-                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-white">99.9%</div>
-                      <div className="text-xs text-white/50">Uptime</div>
-                    </div>
-                    <div className="flex gap-1 mt-2">
-                      {[1, 2, 3, 4, 5].map((i) =>
-                      <div
-                        key={i}
-                        className="h-6 flex-1 bg-green-500/20 rounded-sm" />
-
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section className="relative min-h-screen overflow-hidden bg-background pt-20">
+        <div className="absolute inset-0 bg-grid-white/[0.025] bg-[length:44px_44px]" />
+        <div className="absolute inset-0 z-[5] bg-[radial-gradient(circle_at_70%_44%,rgba(249,115,22,0.14),transparent_32%),linear-gradient(180deg,hsl(var(--background))_0%,transparent_44%,hsl(var(--background))_100%)]" />
+        <BuildMarketDeliver />
+        <HeroSplineRobot />
       </section>
 
       {/* Services Overview */}
