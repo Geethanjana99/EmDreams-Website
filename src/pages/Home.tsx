@@ -50,7 +50,7 @@ function HeroSplineRobot() {
 
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 hidden lg:block">
-      <div className="absolute inset-0 overflow-visible">
+      <div className="spline-container absolute inset-0 overflow-visible">
         <canvas
           ref={canvasRef}
           className="block h-full w-full"
@@ -94,6 +94,14 @@ function BuildMarketDeliver() {
             duration: 1.15,
             stagger: 0.16,
           })
+          .fromTo('.hero-welcome-text', {
+            autoAlpha: 0,
+            x: -30,
+          }, {
+            autoAlpha: 1,
+            x: 0,
+            duration: 1.3,
+          }, 0)
           .to('.hero-word-line', {
             scaleX: 1,
             duration: 0.9,
@@ -122,7 +130,19 @@ function BuildMarketDeliver() {
 
   return (
     <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-4 pt-20 sm:px-6 lg:px-8">
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl relative">
+        {/* Welcome text on the left (aligned with BUILD) */}
+        <div className="hero-welcome-text absolute left-0 top-[2%] hidden lg:block text-left select-none max-w-xs">
+          <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1">
+            DIGITAL INNOVATION
+          </p>
+          <h1 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
+            WELCOME TO <br />
+            <span className="font-black text-white/95 tracking-normal">EMDREAMS</span>
+          </h1>
+          <div className="mt-3 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+        </div>
+
         <div className="ml-auto w-full max-w-5xl space-y-1 text-right lg:pr-8">
         {words.map((word, index) => (
           <div key={word} className="overflow-hidden">

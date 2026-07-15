@@ -100,3 +100,19 @@
     scrollbar-width: none;
   }
 }
+
+/* Hide Spline watermark logo */
+.spline-container {
+  overflow: hidden !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+.spline-container canvas {
+  transform: scale(1.08) !important;
+  transform-origin: top left !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+a[href*="spline.design"] {
+  display: none !important;
+}
