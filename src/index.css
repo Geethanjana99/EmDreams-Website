@@ -108,7 +108,7 @@
   inset: 0 !important;
 }
 .spline-container canvas {
-  transform: scale(1.08) !important;
+  transform: scale(1.08) translate(-9vw, 15px) !important;
   transform-origin: top left !important;
   width: 100% !important;
   height: 100% !important;

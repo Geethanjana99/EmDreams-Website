@@ -145,114 +145,130 @@ function BuildMarketDeliver({ onNavigate }: { onNavigate: (page: string) => void
   }, []);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
-      <div className="w-full max-w-7xl flex flex-col gap-4 lg:gap-6">
-        
-        {/* Row 1: Welcome & BUILD */}
-        <div className="grid grid-cols-12 items-center gap-8">
-          <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-welcome-text select-none">
-            <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1">
-              DIGITAL INNOVATION
-            </p>
-            <h1 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
-              WELCOME TO <br />
-              <span className="font-black text-white/95 tracking-normal">EMDREAMS</span>
-            </h1>
-            <div className="mt-3 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
-          </div>
-          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
-            <span
-              ref={(element) => {
-                if (element) {
-                  wordRefs.current[0] = element;
-                }
-              }}
-              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
-              style={{
-                WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
-              }}
-            >
-              Build
-            </span>
-            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
-          </div>
-        </div>
-
-        {/* Row 2: Description & MARKET */}
-        <div className="grid grid-cols-12 items-center gap-8">
-          <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-desc-text select-none">
-            <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1.5">
-              OUR MISSION
-            </p>
-            <h2 className="text-sm font-light tracking-wide text-white/70 leading-relaxed max-w-sm">
-              We craft immersive 3D digital experiences, interactive web applications, and powerful brand identities that connect companies with their future.
-            </h2>
-            <div className="mt-3.5 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
-          </div>
-          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
-            <span
-              ref={(element) => {
-                if (element) {
-                  wordRefs.current[1] = element;
-                }
-              }}
-              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-primary/30"
-              style={{
-                WebkitTextStroke: '1px rgb(249 115 22 / 0.45)',
-              }}
-            >
-              Market
-              <span className="hero-word-glow pointer-events-none absolute inset-y-4 left-[-70%] w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            </span>
-            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
-          </div>
-        </div>
-
-        {/* Row 3: CTAs & DELIVER */}
-        <div className="grid grid-cols-12 items-center gap-8">
-          <div className="col-span-4 hidden lg:flex flex-col justify-end items-start pointer-events-auto hero-cta-buttons">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => onNavigate('contact')}
-                className="group relative overflow-hidden px-6 py-3 rounded-xl text-[11px] font-bold tracking-[0.15em] uppercase text-black bg-gradient-to-r from-orange-500 to-amber-400 shadow-[0_0_20px_rgba(249,115,22,0.35)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 transform hover:-translate-y-0.5"
+    <>
+      {/* BACKGROUND WORDS LAYER (z-10) */}
+      <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[260px] sm:h-[340px] lg:h-[420px]">
+          {/* Row 1: BUILD */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-12 lg:col-span-8 lg:col-start-5 text-right overflow-hidden">
+              <span
+                ref={(element) => {
+                  if (element) {
+                    wordRefs.current[0] = element;
+                  }
+                }}
+                className="relative inline-block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
+                style={{
+                  WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
+                }}
               >
-                <span className="absolute inset-0 bg-white/20 translate-x-[-110%] skew-x-[-20deg] group-hover:translate-x-[110%] transition-transform duration-500 ease-out" />
-                START PROJECT
-              </button>
-              <button
-                onClick={() => onNavigate('portfolio')}
-                className="px-6 py-3 rounded-xl text-[11px] font-bold tracking-[0.15em] uppercase text-white/80 hover:text-white border border-white/25 hover:border-white bg-transparent hover:bg-white/[0.04] transition-all duration-300 transform hover:-translate-y-0.5"
-              >
-                VIEW WORK
-              </button>
-            </div>
-            {/* Phone Number */}
-            <div className="mt-5 text-[11px] font-bold tracking-[0.2em] text-white/40">
-              <a href="tel:+94773251345" className="hover:text-primary transition-colors duration-200">
-                TEL: +94 77 325 1345
-              </a>
+                Build
+              </span>
+              <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
             </div>
           </div>
-          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
-            <span
-              ref={(element) => {
-                if (element) {
-                  wordRefs.current[2] = element;
-                }
-              }}
-              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
-              style={{
-                WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
-              }}
-            >
-              Deliver
-            </span>
-            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+
+          {/* Row 2: MARKET */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-12 lg:col-span-8 lg:col-start-5 text-right overflow-hidden">
+              <span
+                ref={(element) => {
+                  if (element) {
+                    wordRefs.current[1] = element;
+                  }
+                }}
+                className="relative inline-block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-primary/30"
+                style={{
+                  WebkitTextStroke: '1px rgb(249 115 22 / 0.45)',
+                }}
+              >
+                Market
+                <span className="hero-word-glow pointer-events-none absolute inset-y-4 left-[-70%] w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              </span>
+              <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+            </div>
+          </div>
+
+          {/* Row 3: DELIVER */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-12 lg:col-span-8 lg:col-start-5 text-right overflow-hidden">
+              <span
+                ref={(element) => {
+                  if (element) {
+                    wordRefs.current[2] = element;
+                  }
+                }}
+                className="relative inline-block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
+                style={{
+                  WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
+                }}
+              >
+                Deliver
+              </span>
+              <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+            </div>
           </div>
         </div>
-
       </div>
-    </div>
+
+      {/* FOREGROUND LEFT COLUMN LAYER (z-30) */}
+      <div className="pointer-events-none absolute inset-0 z-30 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[260px] sm:h-[340px] lg:h-[420px]">
+          {/* Row 1: Welcome text */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-welcome-text select-none">
+              <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1">
+                DIGITAL INNOVATION
+              </p>
+              <h1 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
+                WELCOME TO <br />
+                <span className="font-black text-white/95 tracking-normal">EMDREAMS</span>
+              </h1>
+              <div className="mt-3 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+            </div>
+          </div>
+
+          {/* Row 2: Description */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-desc-text select-none">
+              <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1.5">
+                OUR MISSION
+              </p>
+              <h2 className="text-sm font-light tracking-wide text-white/70 leading-relaxed max-w-sm">
+                We craft immersive 3D digital experiences, interactive web applications, and powerful brand identities that connect companies with their future.
+              </h2>
+              <div className="mt-3.5 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+            </div>
+          </div>
+
+          {/* Row 3: CTAs & Phone */}
+          <div className="grid grid-cols-12 items-center gap-8 h-full">
+            <div className="col-span-4 hidden lg:flex flex-col justify-end items-start pointer-events-auto hero-cta-buttons">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => onNavigate('contact')}
+                  className="group px-6 py-3 rounded-xl text-[10.5px] font-bold tracking-[0.2em] uppercase text-orange-400 hover:text-orange-300 border border-orange-500/35 hover:border-orange-500/70 bg-orange-500/[0.04] hover:bg-orange-500/[0.1] transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  START PROJECT
+                </button>
+                <button
+                  onClick={() => onNavigate('portfolio')}
+                  className="group px-6 py-3 rounded-xl text-[10.5px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white border border-white/12 hover:border-white/25 bg-white/[0.02] hover:bg-white/[0.06] transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  VIEW WORK
+                </button>
+              </div>
+              <div className="mt-5 text-[11px] font-bold tracking-[0.2em] text-white/40">
+                <a href="tel:+94773251345" className="hover:text-primary transition-colors duration-200">
+                  TEL: +94 77 325 1345
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
