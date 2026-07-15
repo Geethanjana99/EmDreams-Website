@@ -6,10 +6,14 @@ import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { ArrowRightIcon, CodeIcon, MegaphoneIcon, GraduationCapIcon } from 'lucide-react';
+import { ArrowRightIcon, CodeIcon, MegaphoneIcon, GraduationCapIcon, SmartphoneIcon } from 'lucide-react';
 import { workSteps } from '../data/services';
 import { useServices, useTeamMembers, useProjects } from '../utils/dataHooks';
 import type { Service, TeamMember, Project } from '../types';
+import webDevImg from '../assets/web_dev_service.png';
+import marketingImg from '../assets/digital_marketing_service.png';
+import assignmentsImg from '../assets/assignment_projects_service.png';
+import mobileAppsImg from '../assets/mobile_apps_service.png';
 
 type HomeProps = {
   onNavigate: (page: string) => void;
@@ -279,17 +283,25 @@ export function Home({ onNavigate }: HomeProps) {
 
   useEffect(() => {
     const loadHomeData = async () => {
-      // Merge icons with service data
       const iconMap = {
         'Web Development': CodeIcon,
+        'Mobile Apps': SmartphoneIcon,
         'Digital Marketing': MegaphoneIcon,
         'Assignment Projects': GraduationCapIcon,
+      };
+      
+      const imageMap = {
+        'Web Development': webDevImg,
+        'Mobile Apps': mobileAppsImg,
+        'Digital Marketing': marketingImg,
+        'Assignment Projects': assignmentsImg,
       };
       
       const servicesData = await useServices();
       const servicesWithIcons: Service[] = servicesData.map(service => ({
         ...service,
         icon: iconMap[service.title as keyof typeof iconMap],
+        imageUrl: imageMap[service.title as keyof typeof imageMap] || '',
       }));
       setServices(servicesWithIcons);
       
@@ -373,13 +385,14 @@ export function Home({ onNavigate }: HomeProps) {
             </div>
 
             {/* Cards Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {services.map((service) => (
                 <ServiceCard
                   key={service.title}
                   icon={service.icon}
                   title={service.title}
                   description={service.description}
+                  imageUrl={service.imageUrl}
                   onLearnMore={() => onNavigate('services')}
                 />
               ))}

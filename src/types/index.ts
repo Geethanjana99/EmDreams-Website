@@ -8,6 +8,7 @@ export interface Service {
   icon: IconComponent;
   title: string;
   description: string;
+  imageUrl?: string;
 }
 
 export interface WorkStep {

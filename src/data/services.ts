@@ -12,6 +12,10 @@ export const servicesData: Array<{
     description: 'High-performance 3D digital experiences, interactive web applications, and tailor-made enterprise systems built for speed and visual excellence.',
   },
   {
+    title: 'Mobile Apps',
+    description: 'Immersive iOS and Android mobile solutions built with clean design languages that engage users and drive business growth.',
+  },
+  {
     title: 'Digital Marketing',
     description: 'Data-driven growth strategies, search engine optimization, content creation, and targeted campaigns that elevate your brand visibility.',
   },
