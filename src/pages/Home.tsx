@@ -6,7 +6,7 @@ import { ProjectCard } from '../components/ProjectCard';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { ArrowRightIcon, CloudIcon, CodeIcon, SmartphoneIcon } from 'lucide-react';
+import { ArrowRightIcon, CodeIcon, MegaphoneIcon, GraduationCapIcon } from 'lucide-react';
 import { workSteps } from '../data/services';
 import { useServices, useTeamMembers, useProjects } from '../utils/dataHooks';
 import type { Service, TeamMember, Project } from '../types';
@@ -148,7 +148,7 @@ function BuildMarketDeliver({ onNavigate }: { onNavigate: (page: string) => void
     <>
       {/* BACKGROUND WORDS LAYER (z-10) */}
       <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
-        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[260px] sm:h-[340px] lg:h-[420px]">
+        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[280px] sm:h-[380px] lg:h-[480px]">
           {/* Row 1: BUILD */}
           <div className="grid grid-cols-12 items-center gap-8 h-full">
             <div className="col-span-12 lg:col-span-8 lg:col-start-5 text-right overflow-hidden">
@@ -214,7 +214,7 @@ function BuildMarketDeliver({ onNavigate }: { onNavigate: (page: string) => void
 
       {/* FOREGROUND LEFT COLUMN LAYER (z-30) */}
       <div className="pointer-events-none absolute inset-0 z-30 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
-        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[260px] sm:h-[340px] lg:h-[420px]">
+        <div className="w-full max-w-7xl grid grid-rows-3 items-center h-[280px] sm:h-[380px] lg:h-[480px]">
           {/* Row 1: Welcome text */}
           <div className="grid grid-cols-12 items-center gap-8 h-full">
             <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-welcome-text select-none">
@@ -282,8 +282,8 @@ export function Home({ onNavigate }: HomeProps) {
       // Merge icons with service data
       const iconMap = {
         'Web Development': CodeIcon,
-        'Mobile Apps': SmartphoneIcon,
-        'Cloud Solutions': CloudIcon,
+        'Digital Marketing': MegaphoneIcon,
+        'Assignment Projects': GraduationCapIcon,
       };
       
       const servicesData = await useServices();
@@ -310,41 +310,83 @@ export function Home({ onNavigate }: HomeProps) {
     loadHomeData();
   }, []);
 
+  useEffect(() => {
+    let ctx: any;
+    const initScrollTriggers = async () => {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        // Animate CLI lines staggered on scroll
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.services-sticky-container',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.5,
+          }
+        });
+
+        const lines = gsap.utils.toArray('.cli-line');
+        lines.forEach((line: any, idx: number) => {
+          tl.to(line, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          }, idx * 1.2); // staggered timing
+        });
+      });
+    };
+    initScrollTriggers();
+    return () => ctx?.revert();
+  }, [services]);
+
   return (
     <div className="w-full overflow-hidden">
-      <section className="relative h-[calc(100vh-76px)] overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-grid-white/[0.025] bg-[length:44px_44px]" />
-        <div className="absolute inset-0 z-[5] bg-[radial-gradient(circle_at_70%_44%,rgba(249,115,22,0.14),transparent_32%),linear-gradient(180deg,hsl(var(--background))_0%,transparent_44%,hsl(var(--background))_100%)]" />
-        <BuildMarketDeliver onNavigate={onNavigate} />
-        <HeroSplineRobot />
-      </section>
+      {/* Shared continuous background for Hero and Services */}
+      <div className="relative w-full bg-background">
+        <div className="absolute inset-0 bg-grid-white/[0.025] bg-[length:44px_44px] pointer-events-none" />
+        <div className="absolute inset-0 z-[5] bg-[radial-gradient(circle_at_70%_44%,rgba(249,115,22,0.14),transparent_32%),radial-gradient(circle_at_70%_150vh,rgba(249,115,22,0.08),transparent_25%),linear-gradient(180deg,hsl(var(--background))_0%,transparent_44%,hsl(var(--background))_100%)] pointer-events-none" />
 
-      {/* Services Overview */}
-      <SectionContainer className="bg-muted/30 relative min-h-[600px]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
-            OUR SERVICES
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Comprehensive Solutions
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Digital expertise tailored to your business needs
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service) =>
-          <ServiceCard
-            key={service.title}
-            icon={service.icon}
-            title={service.title}
-            description={service.description}
-            onLearnMore={() => onNavigate('services')} />
+        <section className="relative h-[calc(100vh-76px)] overflow-hidden bg-transparent z-10">
+          <BuildMarketDeliver onNavigate={onNavigate} />
+          <HeroSplineRobot />
+        </section>
 
-          )}
-        </div>
-      </SectionContainer>
+        {/* Services Overview */}
+        <section className="w-full bg-transparent relative py-16 sm:py-20 lg:py-24 overflow-hidden px-4 sm:px-6 lg:px-8 z-10">
+          <div className="w-full max-w-7xl mx-auto space-y-12">
+            {/* Header */}
+            <div className="text-left select-none">
+              <p className="text-[11px] font-bold tracking-[0.35em] text-primary uppercase mb-3.5">
+                OUR SERVICES
+              </p>
+              <h2 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
+                COMPREHENSIVE <br />
+                <span className="font-black text-white/95 tracking-normal">SOLUTIONS</span>
+              </h2>
+              <p className="text-sm font-light text-muted-foreground mt-4 max-w-lg leading-relaxed">
+                Digital expertise tailored to your business needs. We specialize in building cutting-edge web applications, growth marketing campaigns, and academic engineering solutions.
+              </p>
+            </div>
+
+            {/* Cards Grid */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {services.map((service) => (
+                <ServiceCard
+                  key={service.title}
+                  icon={service.icon}
+                  title={service.title}
+                  description={service.description}
+                  onLearnMore={() => onNavigate('services')}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* How We Work */}
       <SectionContainer className="relative overflow-hidden bg-background min-h-[700px] pb-32">

@@ -106,6 +106,8 @@
   overflow: hidden !important;
   position: absolute !important;
   inset: 0 !important;
+  -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 99%);
+  mask-image: linear-gradient(to bottom, black 90%, transparent 99%);
 }
 .spline-container canvas {
   transform: scale(1.08) translate(-9vw, 15px) !important;

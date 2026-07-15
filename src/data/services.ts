@@ -9,15 +9,15 @@ export const servicesData: Array<{
 }> = [
   {
     title: 'Web Development',
-    description: 'Custom web applications built with modern technologies for optimal performance and user experience.',
+    description: 'High-performance 3D digital experiences, interactive web applications, and tailor-made enterprise systems built for speed and visual excellence.',
   },
   {
-    title: 'Mobile Apps',
-    description: 'Native and cross-platform mobile solutions that engage users and drive business growth.',
+    title: 'Digital Marketing',
+    description: 'Data-driven growth strategies, search engine optimization, content creation, and targeted campaigns that elevate your brand visibility.',
   },
   {
-    title: 'Cloud Solutions',
-    description: 'Scalable cloud infrastructure and services to power your digital transformation.',
+    title: 'Assignment Projects',
+    description: 'Academic and custom software engineering assignments designed and executed with clean, well-documented code matching high academic standards.',
   },
 ];
 
