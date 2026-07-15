@@ -135,9 +135,9 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
       ═══════════════════════════════════════ */}
       <header
         aria-label="Site header"
-        className="fixed top-0 left-0 right-0 z-[100] pt-5 pointer-events-none"
+        className="fixed top-0 left-0 right-0 z-[100] pt-5 pointer-events-none px-4 sm:px-6 lg:px-8"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-2 items-center">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-2 items-center">
 
         {/* ════ LEFT ISLAND ════ */}
         <div

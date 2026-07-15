@@ -61,7 +61,7 @@ function HeroSplineRobot() {
   );
 }
 
-function BuildMarketDeliver() {
+function BuildMarketDeliver({ onNavigate }: { onNavigate: (page: string) => void }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wordRefs = useRef<HTMLSpanElement[]>([]);
   const words = ['Build', 'Market', 'Deliver'];
@@ -102,6 +102,22 @@ function BuildMarketDeliver() {
             x: 0,
             duration: 1.3,
           }, 0)
+          .fromTo('.hero-desc-text', {
+            autoAlpha: 0,
+            x: -30,
+          }, {
+            autoAlpha: 1,
+            x: 0,
+            duration: 1.3,
+          }, 0.15)
+          .fromTo('.hero-cta-buttons', {
+            autoAlpha: 0,
+            x: -30,
+          }, {
+            autoAlpha: 1,
+            x: 0,
+            duration: 1.3,
+          }, 0.3)
           .to('.hero-word-line', {
             scaleX: 1,
             duration: 0.9,
@@ -129,45 +145,112 @@ function BuildMarketDeliver() {
   }, []);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-4 pt-20 sm:px-6 lg:px-8">
-      <div className="w-full max-w-7xl relative">
-        {/* Welcome text on the left (aligned with BUILD) */}
-        <div className="hero-welcome-text absolute left-0 top-[2%] hidden lg:block text-left select-none max-w-xs">
-          <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1">
-            DIGITAL INNOVATION
-          </p>
-          <h1 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
-            WELCOME TO <br />
-            <span className="font-black text-white/95 tracking-normal">EMDREAMS</span>
-          </h1>
-          <div className="mt-3 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
-        </div>
-
-        <div className="ml-auto w-full max-w-5xl space-y-1 text-right lg:pr-8">
-        {words.map((word, index) => (
-          <div key={word} className="overflow-hidden">
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center px-4 pb-12 sm:pb-16 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl flex flex-col gap-4 lg:gap-6">
+        
+        {/* Row 1: Welcome & BUILD */}
+        <div className="grid grid-cols-12 items-center gap-8">
+          <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-welcome-text select-none">
+            <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1">
+              DIGITAL INNOVATION
+            </p>
+            <h1 className="text-4xl font-extralight tracking-wider text-white/50 uppercase leading-none">
+              WELCOME TO <br />
+              <span className="font-black text-white/95 tracking-normal">EMDREAMS</span>
+            </h1>
+            <div className="mt-3 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+          </div>
+          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
             <span
               ref={(element) => {
                 if (element) {
-                  wordRefs.current[index] = element;
+                  wordRefs.current[0] = element;
                 }
               }}
-              className={`relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal ${
-                index === 1 ? 'text-primary/30' : 'text-white/10'
-              }`}
+              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
               style={{
-                WebkitTextStroke: index === 1 ? '1px rgb(249 115 22 / 0.45)' : '1px rgb(255 255 255 / 0.16)',
+                WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
               }}
             >
-              {word}
-              {index === 1 && (
-                <span className="hero-word-glow pointer-events-none absolute inset-y-4 left-[-70%] w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              )}
+              Build
             </span>
             <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
           </div>
-        ))}
         </div>
+
+        {/* Row 2: Description & MARKET */}
+        <div className="grid grid-cols-12 items-center gap-8">
+          <div className="col-span-4 hidden lg:block text-left pointer-events-auto hero-desc-text select-none">
+            <p className="text-[11px] font-bold tracking-[0.35em] text-primary/80 uppercase mb-1.5">
+              OUR MISSION
+            </p>
+            <h2 className="text-sm font-light tracking-wide text-white/70 leading-relaxed max-w-sm">
+              We craft immersive 3D digital experiences, interactive web applications, and powerful brand identities that connect companies with their future.
+            </h2>
+            <div className="mt-3.5 h-px w-20 bg-gradient-to-r from-primary to-transparent" />
+          </div>
+          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
+            <span
+              ref={(element) => {
+                if (element) {
+                  wordRefs.current[1] = element;
+                }
+              }}
+              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-primary/30"
+              style={{
+                WebkitTextStroke: '1px rgb(249 115 22 / 0.45)',
+              }}
+            >
+              Market
+              <span className="hero-word-glow pointer-events-none absolute inset-y-4 left-[-70%] w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            </span>
+            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+          </div>
+        </div>
+
+        {/* Row 3: CTAs & DELIVER */}
+        <div className="grid grid-cols-12 items-center gap-8">
+          <div className="col-span-4 hidden lg:flex flex-col justify-end items-start pointer-events-auto hero-cta-buttons">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => onNavigate('contact')}
+                className="group relative overflow-hidden px-6 py-3 rounded-xl text-[11px] font-bold tracking-[0.15em] uppercase text-black bg-gradient-to-r from-orange-500 to-amber-400 shadow-[0_0_20px_rgba(249,115,22,0.35)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 transform hover:-translate-y-0.5"
+              >
+                <span className="absolute inset-0 bg-white/20 translate-x-[-110%] skew-x-[-20deg] group-hover:translate-x-[110%] transition-transform duration-500 ease-out" />
+                START PROJECT
+              </button>
+              <button
+                onClick={() => onNavigate('portfolio')}
+                className="px-6 py-3 rounded-xl text-[11px] font-bold tracking-[0.15em] uppercase text-white/80 hover:text-white border border-white/25 hover:border-white bg-transparent hover:bg-white/[0.04] transition-all duration-300 transform hover:-translate-y-0.5"
+              >
+                VIEW WORK
+              </button>
+            </div>
+            {/* Phone Number */}
+            <div className="mt-5 text-[11px] font-bold tracking-[0.2em] text-white/40">
+              <a href="tel:+94773251345" className="hover:text-primary transition-colors duration-200">
+                TEL: +94 77 325 1345
+              </a>
+            </div>
+          </div>
+          <div className="col-span-12 lg:col-span-8 text-right overflow-hidden">
+            <span
+              ref={(element) => {
+                if (element) {
+                  wordRefs.current[2] = element;
+                }
+              }}
+              className="relative block text-[clamp(4rem,12vw,11rem)] font-black uppercase leading-[0.78] tracking-normal text-white/10"
+              style={{
+                WebkitTextStroke: '1px rgb(255 255 255 / 0.16)',
+              }}
+            >
+              Deliver
+            </span>
+            <span className="hero-word-line ml-auto mt-3 block h-px w-3/5 origin-right scale-x-0 bg-gradient-to-l from-primary/60 via-white/10 to-transparent" />
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -213,10 +296,10 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="w-full overflow-hidden">
-      <section className="relative min-h-screen overflow-hidden bg-background pt-20">
+      <section className="relative h-[calc(100vh-76px)] overflow-hidden bg-background">
         <div className="absolute inset-0 bg-grid-white/[0.025] bg-[length:44px_44px]" />
         <div className="absolute inset-0 z-[5] bg-[radial-gradient(circle_at_70%_44%,rgba(249,115,22,0.14),transparent_32%),linear-gradient(180deg,hsl(var(--background))_0%,transparent_44%,hsl(var(--background))_100%)]" />
-        <BuildMarketDeliver />
+        <BuildMarketDeliver onNavigate={onNavigate} />
         <HeroSplineRobot />
       </section>
 
